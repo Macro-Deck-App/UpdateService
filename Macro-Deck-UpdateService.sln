@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService", "src\MacroDeck.UpdateService\MacroDeck.UpdateService.csproj", "{519D2130-6459-4915-BC6F-4D3D8C58DFF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9B90224A-B95B-445E-96CB-3DA9CDDB7DAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.Core", "src\MacroDeck.UpdateService.Core\MacroDeck.UpdateService.Core.csproj", "{578FDE32-C8BE-4E01-92D3-3A81CAC17637}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{425EB0A1-A37A-4C02-81B2-E197985D625F}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AA9F0242-81A2-43C5-BAFE-20D81403700E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC06E485-1CA2-406B-A6FB-9FF9C8398556}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.UnitTests", "tests\MacroDeck.UpdateService.UnitTests\MacroDeck.UpdateService.UnitTests.csproj", "{58F514EA-BE41-4359-AE82-C7E821B32BEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{519D2130-6459-4915-BC6F-4D3D8C58DFF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{519D2130-6459-4915-BC6F-4D3D8C58DFF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{519D2130-6459-4915-BC6F-4D3D8C58DFF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{519D2130-6459-4915-BC6F-4D3D8C58DFF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578FDE32-C8BE-4E01-92D3-3A81CAC17637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578FDE32-C8BE-4E01-92D3-3A81CAC17637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578FDE32-C8BE-4E01-92D3-3A81CAC17637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578FDE32-C8BE-4E01-92D3-3A81CAC17637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{519D2130-6459-4915-BC6F-4D3D8C58DFF9} = {9B90224A-B95B-445E-96CB-3DA9CDDB7DAF}
+		{578FDE32-C8BE-4E01-92D3-3A81CAC17637} = {9B90224A-B95B-445E-96CB-3DA9CDDB7DAF}
+		{58F514EA-BE41-4359-AE82-C7E821B32BEC} = {AC06E485-1CA2-406B-A6FB-9FF9C8398556}
+	EndGlobalSection
+EndGlobal

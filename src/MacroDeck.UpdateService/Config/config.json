@@ -1,0 +1,11 @@
+{
+  "database": {
+    "connection_string": "User ID=updateservice;Password=test;Database=updateservice;Host=127.0.0.1;Port=5432"
+  },
+  "authentication": {
+    "admin_token": "test"
+  },
+  "paths": {
+    "data_path": "__testdata__"
+  }
+}

@@ -71,10 +71,32 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_timestamp");
 
+                    b.Property<bool>("IsPreviewVersion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_preview_version");
+
+                    b.Property<int>("Major")
+                        .HasColumnType("integer")
+                        .HasColumnName("version_major");
+
+                    b.Property<int>("Minor")
+                        .HasColumnType("integer")
+                        .HasColumnName("version_minor");
+
+                    b.Property<int>("Patch")
+                        .HasColumnType("integer")
+                        .HasColumnName("version_patch");
+
+                    b.Property<int?>("PreviewNo")
+                        .HasColumnType("integer")
+                        .HasColumnName("version_preview_no");
+
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("version");
+                        .HasColumnName("version_string");
 
                     b.Property<int>("VersionState")
                         .HasColumnType("integer")

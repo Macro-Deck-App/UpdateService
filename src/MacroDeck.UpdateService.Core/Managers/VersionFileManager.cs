@@ -9,6 +9,7 @@ using MacroDeck.UpdateService.Core.Extensions;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Core.Managers;
 
@@ -28,10 +29,10 @@ public class VersionFileManager : IVersionFileManager
         _fileDownloadRepository = fileDownloadRepository;
     }
 
-    public async ValueTask<IActionResult> UploadVersionFile(byte[] data, string version, PlatformIdentifier platformIdentifier)
+    public async ValueTask<IActionResult> UploadVersionFile(byte[] data, string fileExtension, Version version, PlatformIdentifier platformIdentifier)
     {
-        var versionEntity = await _versionManager.GetOrCreateVersion(version);
-        var fileExists = await _versionFileRepository.Exists(version, platformIdentifier);
+        var versionEntity = await _versionManager.GetOrCreateVersion(version.ToString());
+        var fileExists = await _versionFileRepository.Exists(version.ToString(), platformIdentifier);
         if (fileExists)
         {
             throw new FileAlreadyExistsException();
@@ -55,14 +56,7 @@ public class VersionFileManager : IVersionFileManager
 
         var fileHash = data.GenerateSha256Hash();
 
-        var extension = platformIdentifier switch
-        {
-            PlatformIdentifier.Win => ".exe",
-            PlatformIdentifier.MacOs => ".dmg",
-            PlatformIdentifier.Linux => string.Empty,
-            _ => throw new ArgumentOutOfRangeException(nameof(platformIdentifier), platformIdentifier, null)
-        };
-        var originalFileName = $"macro-deck-installer-{platformIdentifier}-{version}{extension}".ToLower();
+        var originalFileName = $"macro-deck-{platformIdentifier}-{version}{fileExtension}".ToLower();
 
         var versionFileEntity = new VersionFileEntity
         {
@@ -74,7 +68,7 @@ public class VersionFileManager : IVersionFileManager
         };
 
         await _versionFileRepository.InsertAsync(versionFileEntity);
-        return new CreatedResult(originalFileName, version);
+        return new CreatedResult(originalFileName, version.ToString());
     }
 
     public async ValueTask<VersionFileResult> GetFile(string version, PlatformIdentifier platformIdentifier)

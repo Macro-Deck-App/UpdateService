@@ -4,6 +4,7 @@ using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ErrorHandling.Exceptions;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
+using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Core.Managers;
 
@@ -44,5 +45,32 @@ public class VersionManager : IVersionManager
 
         await _versionRepository.InsertAsync(versionEntity);
         return versionEntity;
+    }
+
+    public async ValueTask<CheckResult> CheckForNewerVersion(
+        string currentVersion,
+        PlatformIdentifier platformIdentifier,
+        bool includePreviewVersions)
+    {
+        if (!Version.TryParse(currentVersion, out var version))
+        {
+            throw new CannotParseVersionException();
+        }
+
+        var newerVersion =
+            await _versionRepository.GetNewerVersion(version, platformIdentifier, includePreviewVersions);
+        if (newerVersion == null)
+        {
+            return new CheckResult
+            {
+                NewerVersionAvailable = false
+            };
+        }
+
+        return new CheckResult
+        {
+            NewerVersionAvailable = true,
+            Version = newerVersion.Version
+        };
     }
 }

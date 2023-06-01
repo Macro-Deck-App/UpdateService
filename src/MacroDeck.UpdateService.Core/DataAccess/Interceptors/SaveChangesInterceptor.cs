@@ -1,6 +1,7 @@
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Core.DataAccess.Interceptors;
 
@@ -27,6 +28,17 @@ public class SaveChangesInterceptor : ISaveChangesInterceptor
                         baseEntity.CreatedTimestamp = DateTime.Now;
                         break;
                 }
+            }
+
+            if (entry.Entity is VersionEntity versionEntity
+                && entry.State is EntityState.Added or EntityState.Modified)
+            {
+                var versionStruct = Version.Parse(versionEntity.Version);
+                versionEntity.Major = versionStruct.Major;
+                versionEntity.Minor = versionStruct.Minor;
+                versionEntity.Patch = versionStruct.Patch;
+                versionEntity.PreviewNo = versionStruct.PreviewNo;
+                versionEntity.IsPreviewVersion = versionStruct.IsPreviewVersion;
             }
         }
 

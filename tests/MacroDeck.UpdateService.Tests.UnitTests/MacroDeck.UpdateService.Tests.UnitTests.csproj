@@ -4,6 +4,7 @@
         <Nullable>disable</Nullable>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>MacroDeck.UpdateService.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,15 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\MacroDeck.UpdateService.Core\MacroDeck.UpdateService.Core.csproj" />
       <ProjectReference Include="..\..\src\MacroDeck.UpdateService\MacroDeck.UpdateService.csproj" />
+      <ProjectReference Include="..\MacroDeck.UpdateService.Tests.Shared\MacroDeck.UpdateService.Tests.Shared.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\MacroDeck.UpdateService.Tests.Shared\TestFiles\*.*">
+            <Link>TestFiles\%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

@@ -13,15 +13,18 @@ public static class VersionEntityMock
             {
                 Id = 1,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-10),
-                VersionState = VersionState.Release,
+                VersionState = VersionState.Published,
                 Version = "1.0.0",
+                Major = 1,
+                Minor = 0,
+                Patch = 0,
                 Files = new List<VersionFileEntity>
                 {
                     new()
                     {
                         Id = 1,
                         CreatedTimestamp = DateTime.Now.AddMinutes(-10),
-                        PlatformIdentifier = PlatformIdentifier.Win,
+                        PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
                         FileDownloads = new List<FileDownloadEntity>()
                         {
@@ -41,15 +44,18 @@ public static class VersionEntityMock
             {
                 Id = 2,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-9),
-                VersionState = VersionState.Release,
+                VersionState = VersionState.Published,
                 Version = "1.1.0",
+                Major = 1,
+                Minor = 1,
+                Patch = 0,
                 Files = new List<VersionFileEntity>
                 {
                     new()
                     {
                         Id = 2,
                         CreatedTimestamp = DateTime.Now.AddMinutes(-9),
-                        PlatformIdentifier = PlatformIdentifier.Win,
+                        PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
                         FileDownloads = new List<FileDownloadEntity>()
                         {
@@ -76,15 +82,18 @@ public static class VersionEntityMock
             {
                 Id = 3,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-8),
-                VersionState = VersionState.Release,
+                VersionState = VersionState.Published,
                 Version = "1.2.0",
+                Major = 1,
+                Minor = 2,
+                Patch = 0,
                 Files = new List<VersionFileEntity>
                 {
                     new()
                     {
                         Id = 3,
                         CreatedTimestamp = DateTime.Now.AddMinutes(-8),
-                        PlatformIdentifier = PlatformIdentifier.Win,
+                        PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
                         FileDownloads = new List<FileDownloadEntity>()
                         {
@@ -111,15 +120,20 @@ public static class VersionEntityMock
             {
                 Id = 4,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                VersionState = VersionState.Preview,
+                VersionState = VersionState.Published,
                 Version = "1.3.0-preview1",
+                Major = 1,
+                Minor = 3,
+                Patch = 0,
+                PreviewNo = 1,
+                IsPreviewVersion = true,
                 Files = new List<VersionFileEntity>
                 {
                     new()
                     {
-                        Id = 4,
+                        Id = 5,
                         CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                        PlatformIdentifier = PlatformIdentifier.Win,
+                        PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
                         FileDownloads = new List<FileDownloadEntity>()
                         {
@@ -128,46 +142,46 @@ public static class VersionEntityMock
                                 Id = 6,
                                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                                 DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 4
+                                VersionFileId = 5
                             },
                             new()
                             {
                                 Id = 7,
                                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                                 DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 4
+                                VersionFileId = 5
                             },
                             new()
                             {
                                 Id = 8,
                                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                                 DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 4
+                                VersionFileId = 5
                             }
                         },
                         VersionId = 4
                     },
                     new()
                     {
-                        Id = 5,
+                        Id = 6,
                         CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                        PlatformIdentifier = PlatformIdentifier.Linux,
+                        PlatformIdentifier = PlatformIdentifier.LinuxX64,
                         FileHash = "1234",
                         FileDownloads = new List<FileDownloadEntity>()
                         {
                             new()
                             {
-                                Id = 8,
+                                Id = 9,
                                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                                 DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 5
+                                VersionFileId = 6
                             },
                             new()
                             {
-                                Id = 9,
+                                Id = 10,
                                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                                 DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 5
+                                VersionFileId = 6
                             }
                         },
                         VersionId = 4

@@ -1,15 +1,15 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "https": {
+    "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7163;http://localhost:5292",
+      "applicationUrl": "http://localhost:5292/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment",
-        "HOSTING_PORT": "7163",
+        "HOSTING_PORT": "5292",
         "CONFIGSERVICE_URL" : "",
         "CONFIGSERVICE_AUTHTOKEN" : ""
       }

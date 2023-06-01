@@ -5,6 +5,7 @@ using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
 using Microsoft.EntityFrameworkCore;
+using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Core.DataAccess.Repositories;
 
@@ -21,12 +22,15 @@ public class VersionRepository : BaseRepository<VersionEntity>, IVersionReposito
     public async ValueTask<VersionInfo?> GetLatestVersion(PlatformIdentifier platformIdentifier, bool includePreviewVersions)
     {
         var versionInfo = await Context.Set<VersionEntity>().AsNoTracking()
-            .Include(x => x.Files)
+            .Where(x => x.VersionState == VersionState.Published)
             .Where(x => x.Files.Any(y => y.PlatformIdentifier == platformIdentifier))
-            .Where(x => (includePreviewVersions == true && x.VersionState == VersionState.Preview) ||
-                        x.VersionState == VersionState.Release)
-            .OrderByDescending(x => x.CreatedTimestamp)
-            .Take(1)
+            .Where(x => includePreviewVersions && x.IsPreviewVersion || !x.IsPreviewVersion)
+            .OrderByDescending(x => x.Major)
+            .ThenByDescending(x => x.Minor)
+            .ThenByDescending(x => x.Patch)
+            .ThenBy(x => x.IsPreviewVersion)
+            .ThenByDescending(x => x.PreviewNo ?? 0)
+            .Include(x => x.Files)
             .ProjectTo<VersionInfo>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
@@ -69,6 +73,31 @@ public class VersionRepository : BaseRepository<VersionEntity>, IVersionReposito
     public async ValueTask<VersionEntity?> GetVersion(string version)
     {
         return await GetVersionBaseQuery(version).SingleOrDefaultAsync();
+    }
+
+    public async ValueTask<VersionEntity?> GetNewerVersion(
+        Version currentVersion,
+        PlatformIdentifier platformIdentifier,
+        bool includePreviewVersions)
+    {
+        return await Context.Set<VersionEntity>().AsNoTracking()
+            .Where(x => x.VersionState == VersionState.Published)
+            .Where(x => x.Files.Any(y => y.PlatformIdentifier == platformIdentifier))
+            .Where(x => includePreviewVersions && x.IsPreviewVersion || !x.IsPreviewVersion)
+            .Where(x => x.Major > currentVersion.Major
+                        || (x.Major == currentVersion.Major && x.Minor > currentVersion.Minor)
+                        || (x.Major == currentVersion.Major && x.Minor == currentVersion.Minor &&
+                            x.Patch > currentVersion.Patch)
+                        || (x.Major == currentVersion.Major && x.Minor == currentVersion.Minor &&
+                            x.Patch == currentVersion.Patch
+                            && ((x.IsPreviewVersion == false && currentVersion.PreviewNo.HasValue)
+                                || (x.PreviewNo.HasValue && x.PreviewNo > currentVersion.PreviewNo))))
+            .OrderByDescending(x => x.Major)
+            .ThenByDescending(x => x.Minor)
+            .ThenByDescending(x => x.Patch)
+            .ThenBy(x => x.IsPreviewVersion)
+            .ThenByDescending(x => x.PreviewNo ?? 0)
+            .FirstOrDefaultAsync();
     }
 
     private IQueryable<VersionEntity> GetVersionBaseQuery(string version)

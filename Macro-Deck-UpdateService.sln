@@ -11,13 +11,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{42
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AA9F0242-81A2-43C5-BAFE-20D81403700E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC06E485-1CA2-406B-A6FB-9FF9C8398556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.UnitTests", "tests\MacroDeck.UpdateService.UnitTests\MacroDeck.UpdateService.UnitTests.csproj", "{58F514EA-BE41-4359-AE82-C7E821B32BEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.Tests.UnitTests", "tests\MacroDeck.UpdateService.Tests.UnitTests\MacroDeck.UpdateService.Tests.UnitTests.csproj", "{58F514EA-BE41-4359-AE82-C7E821B32BEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.Tests.Shared", "tests\MacroDeck.UpdateService.Tests.Shared\MacroDeck.UpdateService.Tests.Shared.csproj", "{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacroDeck.UpdateService.Tests.IntegrationTests", "tests\MacroDeck.UpdateService.Tests.IntegrationTests\MacroDeck.UpdateService.Tests.IntegrationTests.csproj", "{BADFA232-2794-4BD6-A5C2-F628C7E80D5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +42,20 @@ Global
 		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58F514EA-BE41-4359-AE82-C7E821B32BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BADFA232-2794-4BD6-A5C2-F628C7E80D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BADFA232-2794-4BD6-A5C2-F628C7E80D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BADFA232-2794-4BD6-A5C2-F628C7E80D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BADFA232-2794-4BD6-A5C2-F628C7E80D5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{519D2130-6459-4915-BC6F-4D3D8C58DFF9} = {9B90224A-B95B-445E-96CB-3DA9CDDB7DAF}
 		{578FDE32-C8BE-4E01-92D3-3A81CAC17637} = {9B90224A-B95B-445E-96CB-3DA9CDDB7DAF}
 		{58F514EA-BE41-4359-AE82-C7E821B32BEC} = {AC06E485-1CA2-406B-A6FB-9FF9C8398556}
+		{CDDF1A6B-038B-4D7C-9BD7-7F329ECD7680} = {AC06E485-1CA2-406B-A6FB-9FF9C8398556}
+		{BADFA232-2794-4BD6-A5C2-F628C7E80D5B} = {AC06E485-1CA2-406B-A6FB-9FF9C8398556}
 	EndGlobalSection
 EndGlobal

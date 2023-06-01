@@ -11,4 +11,9 @@ public interface IVersionManager
     public ValueTask<VersionInfo> GetVersion(string version);
 
     public ValueTask<VersionEntity> GetOrCreateVersion(string version);
+
+    public ValueTask<CheckResult> CheckForNewerVersion(
+        string currentVersion,
+        PlatformIdentifier platformIdentifier,
+        bool includePreviewVersions);
 }

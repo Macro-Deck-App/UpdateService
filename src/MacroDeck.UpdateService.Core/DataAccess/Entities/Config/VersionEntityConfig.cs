@@ -22,8 +22,27 @@ public class VersionEntityConfig : BaseEntityConfig<VersionEntity>
         builder.HasIndex(x => x.VersionState);
 
         builder.Property(x => x.Version)
-            .HasColumnName("version")
+            .HasColumnName("version_string")
             .IsRequired();
+
+        builder.Property(x => x.Major)
+            .HasColumnName("version_major")
+            .IsRequired();
+
+        builder.Property(x => x.Minor)
+            .HasColumnName("version_minor")
+            .IsRequired();
+
+        builder.Property(x => x.Patch)
+            .HasColumnName("version_patch")
+            .IsRequired();
+
+        builder.Property(x => x.PreviewNo)
+            .HasColumnName("version_preview_no");
+
+        builder.Property(x => x.IsPreviewVersion)
+            .HasColumnName("is_preview_version")
+            .HasDefaultValue(false);
 
         builder.Property(x => x.VersionState)
             .HasColumnName("version_state")

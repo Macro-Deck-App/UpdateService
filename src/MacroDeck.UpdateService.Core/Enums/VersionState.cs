@@ -2,7 +2,7 @@ namespace MacroDeck.UpdateService.Core.Enums;
 
 public enum VersionState
 {
-    Unpublished,
-    Preview,
-    Release
+    Unpublished = 1,
+    ClosedTest = 2,
+    Published = 3
 }

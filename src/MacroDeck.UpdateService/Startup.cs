@@ -31,11 +31,8 @@ public class Startup
         app.UseCors("AllowAny");
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseStaticFiles();
-        app.UseWebSockets(new WebSocketOptions
-        {
-            KeepAliveInterval = TimeSpan.FromMinutes(2)
-        });
         app.UseRouting();
+        app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

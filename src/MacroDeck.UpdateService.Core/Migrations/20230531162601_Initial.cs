@@ -22,7 +22,12 @@ namespace MacroDeck.UpdateService.Core.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    version = table.Column<string>(type: "text", nullable: false),
+                    version_string = table.Column<string>(type: "text", nullable: false),
+                    version_major = table.Column<int>(type: "integer", nullable: false),
+                    version_minor = table.Column<int>(type: "integer", nullable: false),
+                    version_patch = table.Column<int>(type: "integer", nullable: false),
+                    version_preview_no = table.Column<int>(type: "integer", nullable: true),
+                    is_preview_version = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     version_state = table.Column<int>(type: "integer", nullable: false),
                     created_timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -106,17 +111,17 @@ namespace MacroDeck.UpdateService.Core.Migrations
                 column: "version_ref");
 
             migrationBuilder.CreateIndex(
-                name: "IX_versions_version",
-                schema: "updateservice",
-                table: "versions",
-                column: "version",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_versions_version_state",
                 schema: "updateservice",
                 table: "versions",
                 column: "version_state");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_versions_version_string",
+                schema: "updateservice",
+                table: "versions",
+                column: "version_string",
+                unique: true);
         }
 
         /// <inheritdoc />

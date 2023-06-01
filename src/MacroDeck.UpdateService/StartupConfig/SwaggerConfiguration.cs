@@ -1,3 +1,4 @@
+using MacroDeck.UpdateService.Core.Helper;
 using Microsoft.OpenApi.Models;
 
 namespace MacroDeck.UpdateService.StartupConfig;
@@ -6,6 +7,11 @@ public static class SwaggerConfiguration
 {
     public static void AddSwagger(this IServiceCollection services)
     {
+        if (EnvironmentHelper.IsProduction)
+        {
+            return;
+        }
+        
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
@@ -40,7 +46,12 @@ public static class SwaggerConfiguration
     }
 
     public static void ConfigureSwagger(this IApplicationBuilder app)
-    { 
+    {
+        if (EnvironmentHelper.IsProduction)
+        {
+            return;
+        }
+        
         app.UseSwagger();
         app.UseSwaggerUI();
     }

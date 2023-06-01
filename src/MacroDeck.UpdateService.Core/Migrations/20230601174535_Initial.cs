@@ -70,7 +70,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     download_reason = table.Column<int>(type: "integer", nullable: false),
-                    platform = table.Column<int>(type: "integer", nullable: false),
                     version_file_ref = table.Column<int>(type: "integer", nullable: false),
                     created_timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -91,12 +90,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                 schema: "updateservice",
                 table: "file_downloads",
                 column: "download_reason");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_file_downloads_platform",
-                schema: "updateservice",
-                table: "file_downloads",
-                column: "platform");
 
             migrationBuilder.CreateIndex(
                 name: "IX_file_downloads_version_file_ref",

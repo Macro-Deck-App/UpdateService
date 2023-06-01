@@ -11,7 +11,9 @@ namespace MacroDeck.UpdateService.Tests.IntegrationTests;
 
 public static class IntegrationTestHelper
 {
-    public static TestServer TestServer { get; set; } = null!;
+    public static TestServer TestServer { get; set; }
+
+    public static IServiceScope RootScope { get; set; }
 
     public static IFlurlRequest TestClientRequest => FlurlClient.Request();
     

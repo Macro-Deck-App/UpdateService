@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MacroDeck.UpdateService.Core.Migrations
 {
     [DbContext(typeof(UpdateServiceContext))]
-    [Migration("20230531162601_Initial")]
+    [Migration("20230601174535_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -42,10 +42,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("download_reason");
 
-                    b.Property<int>("PlatformIdentifier")
-                        .HasColumnType("integer")
-                        .HasColumnName("platform");
-
                     b.Property<int>("VersionFileId")
                         .HasColumnType("integer")
                         .HasColumnName("version_file_ref");
@@ -53,8 +49,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DownloadReason");
-
-                    b.HasIndex("PlatformIdentifier");
 
                     b.HasIndex("VersionFileId");
 

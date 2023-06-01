@@ -1,18 +1,23 @@
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
 namespace MacroDeck.UpdateService.Tests.IntegrationTests;
 
-public class TestBase
+public abstract class TestBase
 {
+    protected IServiceScope TestScope { get; private set; }
+    
     [SetUp]
-    public async Task BaseSetUp()
+    public virtual async Task SetUp()
     {
         await IntegrationTestHelper.TruncateAllTables();
+        TestScope = IntegrationTestHelper.RootScope.ServiceProvider.CreateScope();
     }
 
     [TearDown]
-    public async Task BaseCleanUp()
+    public virtual async Task CleanUp()
     {
         await IntegrationTestHelper.TruncateAllTables();
+        TestScope?.Dispose();
     }
 }

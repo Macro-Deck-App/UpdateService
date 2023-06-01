@@ -39,10 +39,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("download_reason");
 
-                    b.Property<int>("PlatformIdentifier")
-                        .HasColumnType("integer")
-                        .HasColumnName("platform");
-
                     b.Property<int>("VersionFileId")
                         .HasColumnType("integer")
                         .HasColumnName("version_file_ref");
@@ -50,8 +46,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DownloadReason");
-
-                    b.HasIndex("PlatformIdentifier");
 
                     b.HasIndex("VersionFileId");
 

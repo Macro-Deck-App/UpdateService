@@ -22,9 +22,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Config\config.json">
+      <None Update="Config\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

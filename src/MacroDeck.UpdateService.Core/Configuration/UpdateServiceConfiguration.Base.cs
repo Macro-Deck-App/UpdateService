@@ -21,7 +21,7 @@ public static partial class UpdateServiceConfiguration
     {
         Logger.Information("Loading config from {ConfigPath}...", ConfigPath);
 
-        if (EnvironmentHelper.IsTestingOrProduction)
+        if (EnvironmentHelper.IsStagingOrProduction)
         {
             Logger.Information(
                 "Service was started in testing or production environment. Will download config from ConfigService");
@@ -37,16 +37,16 @@ public static partial class UpdateServiceConfiguration
         Logger.Information("Configuration loaded");
     }
 
-    private static JsonConfigurationSource LoadConfigurationFile(string configPath)
-    {
-        return new JsonConfigurationSource
+        private static JsonConfigurationSource LoadConfigurationFile(string configPath)
         {
-            Path = configPath,
-            ReloadOnChange = true,
-            ReloadDelay = 2000,
-            Optional = false
-        };
-    }
+            return new JsonConfigurationSource
+            {
+                Path = configPath,
+                ReloadOnChange = true,
+                ReloadDelay = 2000,
+                Optional = false
+            };
+        }
 
     private static string GetString(string key)
     {

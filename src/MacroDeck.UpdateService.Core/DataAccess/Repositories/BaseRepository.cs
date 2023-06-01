@@ -15,7 +15,6 @@ public class BaseRepository<T> : IBaseRepository<T>
     protected BaseRepository(UpdateServiceContext context)
     {
         Context = context;
-        Context.Database.EnsureCreated();
     }
 
     public async Task InsertAsync(T obj)

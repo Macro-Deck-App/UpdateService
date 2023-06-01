@@ -11,10 +11,11 @@ public class EnvironmentHelper
     private const string ConfigServiceUrlVariable = "CONFIGSERVICE_URL";
     private const string ConfigServiceAuthTokenVariable = "CONFIGSERVICE_AUTHTOKEN";
 
+    public static bool IsGitHubIntegrationTest => IsCurrentEnvironment("GitHubIntegrationTest");
     public static bool IsLocalDevelopment => IsCurrentEnvironment("LocalDevelopment");
-    public static bool IsTesting => IsCurrentEnvironment("Testing");
+    public static bool IsStaging => IsCurrentEnvironment("Staging");
     public static bool IsProduction => IsCurrentEnvironment("Production");
-    public static bool IsTestingOrProduction => IsTesting || IsProduction;
+    public static bool IsStagingOrProduction => IsStaging || IsProduction;
     public static int HostingPort => GetIntFromEnvironmentVariable(HostingPortVariable);
     public static string ConfigServiceUrl => GetStringFromEnvironmentVariable(ConfigServiceUrlVariable);
     public static string ConfigServiceAuthToken => GetStringFromEnvironmentVariable(ConfigServiceAuthTokenVariable);

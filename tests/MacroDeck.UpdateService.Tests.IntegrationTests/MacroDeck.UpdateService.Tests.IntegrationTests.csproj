@@ -9,6 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
         <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.3.0" />
@@ -23,10 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Config\config.json">
+      <None Update="Config\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      </Content>
+      </None>
     </ItemGroup>
     
     <ItemGroup>
@@ -36,5 +38,5 @@
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
-
+    
 </Project>

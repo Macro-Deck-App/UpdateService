@@ -9,7 +9,7 @@ public class UpdateServiceContext : DbContext
         : base(options)
     {
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var applyGenericMethod =

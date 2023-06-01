@@ -1,6 +1,6 @@
 namespace MacroDeck.UpdateService.Tests.Shared;
 
-public static class Constants
+public static class SharedTestConstants
 {
     public const string TestFileLinuxSha256 = "c908f68dcd4060067c0f8237c2e24133f0169125bfd95362e179c46da03c64fc";
     public const string TestFileMacSha256 = "1533b64723d01ea643bca248e751a9eb97c2084a305bb7450f37685348e13be2";

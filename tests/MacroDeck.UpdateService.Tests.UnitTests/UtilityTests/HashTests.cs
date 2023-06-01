@@ -23,9 +23,9 @@ public class HashTests
         var testFile3Hash = testFile3Bytes.GenerateSha256Hash();
         Assert.Multiple(() =>
         {
-            Assert.That(testFile1Hash, Is.EqualTo(Constants.TestFileLinuxSha256));
-            Assert.That(testFile2Hash, Is.EqualTo(Constants.TestFileMacSha256));
-            Assert.That(testFile3Hash, Is.EqualTo(Constants.TestFileWinSha256));
+            Assert.That(testFile1Hash, Is.EqualTo(SharedTestConstants.TestFileLinuxSha256));
+            Assert.That(testFile2Hash, Is.EqualTo(SharedTestConstants.TestFileMacSha256));
+            Assert.That(testFile3Hash, Is.EqualTo(SharedTestConstants.TestFileWinSha256));
         });
     }
 }

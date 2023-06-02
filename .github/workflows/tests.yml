@@ -28,8 +28,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Pull the base image
+        run: docker pull ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
-      - name: Build and Run Tests inside Docker container
-        run: |
-            docker build . --file Dockerfile --target build --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
-            docker run --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test
+      - name: Run Tests inside Docker container
+        run: docker run --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}  --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest  dotnet test

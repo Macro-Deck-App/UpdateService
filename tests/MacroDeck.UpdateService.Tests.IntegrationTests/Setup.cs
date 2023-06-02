@@ -21,7 +21,7 @@ public class Setup
         if (EnvironmentHelper.IsGitHubIntegrationTest)
         {
             UpdateServiceConfiguration.DatabaseConnectionStringOverride =
-                "User ID=updateservice;Password=test;Database=updateserviceintegrationtest;Host=postgres;Port=5432";
+                "User ID=updateservice;Password=test;Database=updateserviceintegrationtest;Host=localhost;Port=5432";
         }
 
         var webHostBuilder = new WebHostBuilder()

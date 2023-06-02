@@ -17,7 +17,7 @@ public static partial class UpdateServiceConfiguration
 
     private const string ConfigPath = "Config/config.json";
     
-    static UpdateServiceConfiguration()
+    public static async ValueTask Initialize()
     {
         Logger.Information("Loading config from {ConfigPath}...", ConfigPath);
 
@@ -25,7 +25,7 @@ public static partial class UpdateServiceConfiguration
         {
             Logger.Information(
                 "Service was started in staging or production environment. Will download config from ConfigService");
-            UpdateConfig(ConfigPath, CancellationToken.None).Wait();
+            await UpdateConfig(ConfigPath, CancellationToken.None);
         }
 
         var configBuilder = new ConfigurationBuilder();
@@ -63,7 +63,7 @@ public static partial class UpdateServiceConfiguration
         return string.Empty;
     }
 
-    private static async Task UpdateConfig(string configPath, CancellationToken cancellationToken)
+    private static async ValueTask UpdateConfig(string configPath, CancellationToken cancellationToken)
     {
         try
         {
@@ -79,7 +79,7 @@ public static partial class UpdateServiceConfiguration
         }
     }
 
-    private static async Task<EncodedConfig> DownloadFromConfigService()
+    private static async ValueTask<EncodedConfig> DownloadFromConfigService()
     {
         using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("x-config-name", new []{ ConfigName });

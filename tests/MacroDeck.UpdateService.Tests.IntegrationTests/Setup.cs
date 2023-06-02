@@ -18,6 +18,9 @@ public class Setup
     public async Task SetupIntegrationTestEnvironment()
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        
+        await UpdateServiceConfiguration.Initialize();
+        
         if (EnvironmentHelper.IsGitHubIntegrationTest)
         {
             UpdateServiceConfiguration.DatabaseConnectionStringOverride =

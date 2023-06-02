@@ -1,3 +1,4 @@
+using MacroDeck.UpdateService.Core.Configuration;
 using MacroDeck.UpdateService.Core.DataAccess.Extensions;
 using MacroDeck.UpdateService.Core.Helper;
 using MacroDeck.UpdateService.StartupConfig;
@@ -11,6 +12,8 @@ public static class Program
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+        await UpdateServiceConfiguration.Initialize();
         
         var app = Host.CreateDefaultBuilder(args)
             .ConfigureSerilog()

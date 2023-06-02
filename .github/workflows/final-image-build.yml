@@ -19,13 +19,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Pull the base image
-        run: docker pull ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }}
+        run: docker pull ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Build the Docker image
         run: docker build . \
-          --build-arg BASE_IMAGE=ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }} \
+          --build-arg BASE_IMAGE=ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} \
           --file /src/MacroDeck.UpdateService/Dockerfile \
-          --tag ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice:${{ github.sha }}
+          --tag ghcr.io/macro-deck-app/macro-deck-updateservice:${{ github.sha }}
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice:${{ github.sha }}
+        run: docker push ghcr.io/macro-deck-app/macro-deck-updateservice:${{ github.sha }}

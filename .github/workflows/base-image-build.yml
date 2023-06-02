@@ -20,7 +20,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build . \
-          --file Dockerfile --tag ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }}
+          --file Dockerfile --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }}
+        run: docker push ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}

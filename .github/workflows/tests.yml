@@ -34,6 +34,6 @@ jobs:
             docker build . \
             --file Dockerfile \
             --target build \
-            --tag ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }}
+            --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
             docker run --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest \
-            --rm ghcr.io/${{ github.repository_owner | tolower }}/macro-deck-updateservice_base:${{ github.sha }} dotnet test
+            --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test

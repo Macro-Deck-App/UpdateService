@@ -31,9 +31,5 @@ jobs:
 
       - name: Build and Run Tests inside Docker container
         run: |
-            docker build . \
-            --file Dockerfile \
-            --target build \
-            --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
-            docker run --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest \
-            --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test
+            docker build . --file Dockerfile --target build --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
+            docker run --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test

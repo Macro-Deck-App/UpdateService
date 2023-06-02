@@ -19,8 +19,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the Docker image
-        run: docker build . \
-          --file Dockerfile --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
+        run: docker build . --file Dockerfile --tag ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Push Docker image
         run: docker push ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}

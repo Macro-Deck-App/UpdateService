@@ -22,10 +22,7 @@ jobs:
         run: docker pull ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Build the Docker image
-        run: docker build . \
-          --build-arg BASE_IMAGE=ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} \
-          --file /src/MacroDeck.UpdateService/Dockerfile \
-          --tag ghcr.io/macro-deck-app/macro-deck-updateservice:${{ github.sha }}
+        run: docker build . --build-arg BASE_IMAGE=ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} --file /src/MacroDeck.UpdateService/Dockerfile --tag ghcr.io/macro-deck-app/macro-deck-updateservice:${{ github.sha }}
 
       - name: Push Docker image
         run: docker push ghcr.io/macro-deck-app/macro-deck-updateservice:${{ github.sha }}

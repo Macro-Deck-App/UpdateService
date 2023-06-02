@@ -20,9 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\base-image-build.yml = .github\workflows\base-image-build.yml
 		.github\workflows\final-image-build.yml = .github\workflows\final-image-build.yml
-		.github\workflows\tests.yml = .github\workflows\tests.yml
 		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
 		.github\workflows\deploy-production.yml = .github\workflows\deploy-production.yml
+		.github\workflows\integration-tests.yml = .github\workflows\integration-tests.yml
+		.github\workflows\unit-tests.yml = .github\workflows\unit-tests.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC06E485-1CA2-406B-A6FB-9FF9C8398556}"

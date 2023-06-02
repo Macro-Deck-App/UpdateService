@@ -1,4 +1,4 @@
-name: Tests
+name: Integration Tests
 
 on:
   workflow_call:
@@ -9,11 +9,13 @@ jobs:
     
     services:
       postgres:
-        image: postgres:13
+        image: postgres:15
         env:
           POSTGRES_USER: updateservice
           POSTGRES_PASSWORD: test
           POSTGRES_DB: updateserviceintegrationtest
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -21,9 +23,6 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -35,4 +34,7 @@ jobs:
         run: docker pull ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Run Tests inside Docker container
-        run: docker run --rm --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test
+        run: |
+          docker run --rm --network="host" --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest \
+            ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} \
+            -c "cd tests/MacroDeck.UpdateService.Tests.IntegrationTests/ ; dotnet test"

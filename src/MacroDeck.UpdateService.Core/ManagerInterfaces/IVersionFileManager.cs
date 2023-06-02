@@ -7,9 +7,11 @@ namespace MacroDeck.UpdateService.Core.ManagerInterfaces;
 
 public interface IVersionFileManager
 {
-    public ValueTask<IActionResult> UploadVersionFile(byte[] file, string fileExtension, Version version, PlatformIdentifier platformIdentifier);
+    public ValueTask<IActionResult> UploadVersionFile(Stream stream, string fileExtension, Version version, PlatformIdentifier platformIdentifier);
 
     public ValueTask<VersionFileResult> GetFile(string version, PlatformIdentifier platformIdentifier);
+
+    public ValueTask<double> GetFileSizeMb(string version, PlatformIdentifier platformIdentifier);
 
     public ValueTask CountDownload(
         string version,

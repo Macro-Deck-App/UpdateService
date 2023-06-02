@@ -34,6 +34,10 @@ public class VersionFileEntityConfig : BaseEntityConfig<VersionFileEntity>
             .HasColumnName("hash")
             .IsRequired();
 
+        builder.Property(x => x.FileSize)
+            .HasColumnName("file_size")
+            .IsRequired();
+
         builder.Property(x => x.VersionId)
             .HasColumnName("version_ref")
             .IsRequired();

@@ -33,14 +33,10 @@ public class FileController : UpdateServiceControllerBase
         {
             throw new NoFileUploadedException();
         }
-        
+
         var stream = file.OpenReadStream();
-        using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
-        
-        var fileBytes = ms.ToArray();
         var fileExtension = Path.GetExtension(file.FileName);
 
-        return await _versionFileManager.UploadVersionFile(fileBytes, fileExtension, versionStruct, platform);
+        return await _versionFileManager.UploadVersionFile(stream, fileExtension, versionStruct, platform);
     }
 }

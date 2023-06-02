@@ -1,6 +1,5 @@
 using MacroDeck.UpdateService.Core.Configuration;
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
-using MacroDeck.UpdateService.Core.DataAccess.Extensions;
 using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
@@ -29,7 +28,7 @@ public class VersionFileManager : IVersionFileManager
         _fileDownloadRepository = fileDownloadRepository;
     }
 
-    public async ValueTask<IActionResult> UploadVersionFile(byte[] data, string fileExtension, Version version, PlatformIdentifier platformIdentifier)
+    public async ValueTask<IActionResult> UploadVersionFile(Stream stream, string fileExtension, Version version, PlatformIdentifier platformIdentifier)
     {
         var versionEntity = await _versionManager.GetOrCreateVersion(version.ToString());
         var fileExists = await _versionFileRepository.Exists(version.ToString(), platformIdentifier);
@@ -41,10 +40,13 @@ public class VersionFileManager : IVersionFileManager
         var saveFileName = Guid.NewGuid().ToString();
         var savePath = Path.Combine(UpdateServiceConfiguration.DataPath, saveFileName);
         EnsureDestinationDirectoryExists(savePath);
+
+        string fileHash;
         try
         {
-            await using var stream = File.Create(savePath);
-            stream.Write(data, 0, data.Length);
+            await using var saveStream = File.Create(savePath);
+            await stream.CopyToAsync(saveStream);
+            fileHash = await saveStream.CalculateSha256Hash();
         }
         catch (Exception ex)
         {
@@ -54,7 +56,6 @@ public class VersionFileManager : IVersionFileManager
             throw;
         }
 
-        var fileHash = data.GenerateSha256Hash();
 
         var originalFileName = $"macro-deck-{version}-{platformIdentifier}{fileExtension}".ToLower();
 
@@ -64,7 +65,8 @@ public class VersionFileManager : IVersionFileManager
             SavedFileName = saveFileName,
             OriginalFileName = originalFileName,
             FileHash = fileHash,
-            VersionId = versionEntity.Id
+            VersionId = versionEntity.Id,
+            FileSize = stream.Length
         };
 
         await _versionFileRepository.InsertAsync(versionFileEntity);
@@ -80,9 +82,10 @@ public class VersionFileManager : IVersionFileManager
         }
 
         var filePath = Path.Combine(UpdateServiceConfiguration.DataPath, versionFile.SavedFileName);
-        var bytes = await File.ReadAllBytesAsync(filePath);
+        var fileStream = File.OpenRead(filePath);
 
-        var calculatedHash = bytes.GenerateSha256Hash();
+        var calculatedHash = await fileStream.CalculateSha256Hash();
+
         if (!versionFile.FileHash.EqualsCryptographically(calculatedHash))
         {
             _logger.Fatal(
@@ -94,7 +97,18 @@ public class VersionFileManager : IVersionFileManager
             throw new InvalidOperationException("File hash invalid");
         }
 
-        return new VersionFileResult(bytes, versionFile.FileHash, versionFile.OriginalFileName);
+        return new VersionFileResult(fileStream, versionFile.FileHash, versionFile.OriginalFileName);
+    }
+
+    public async ValueTask<double> GetFileSizeMb(string version, PlatformIdentifier platformIdentifier)
+    {
+        var versionFile = await _versionFileRepository.GetVersionFile(version, platformIdentifier);
+        if (versionFile == null)
+        {
+            throw new VersionDoesNotExistException();
+        }
+
+        return versionFile.FileSize / 1024f / 1024f;
     }
 
     public async ValueTask CountDownload(

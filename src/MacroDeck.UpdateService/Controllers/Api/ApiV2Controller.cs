@@ -64,7 +64,15 @@ public class ApiV2Controller : ControllerBase
         var versionInfo = await _versionManager.GetVersion(version);
         return _mapper.Map<ApiV2VersionInfo>(versionInfo);
     }
-    
+
+    [HttpGet("{version}/fileSize/{platform}")]
+    public async ValueTask<double> GetFileSize(
+        string version,
+        PlatformIdentifier platform)
+    {
+        return await _versionFileManager.GetFileSizeMb(version, platform);
+    }
+
     [HttpGet("latest/download/{platform}")]
     [AllowAnonymous]
     public async ValueTask<ActionResult<byte[]>> DownloadLatestVersion(
@@ -78,7 +86,7 @@ public class ApiV2Controller : ControllerBase
     
     [HttpGet("{version}/download/{platform}")]
     [AllowAnonymous]
-    public async ValueTask<ActionResult<byte[]>> DownloadVersion(
+    public async ValueTask<ActionResult> DownloadVersion(
         string version,
         PlatformIdentifier platform,
         [FromQuery] DownloadReason downloadReason = DownloadReason.FirstDownload)
@@ -87,6 +95,10 @@ public class ApiV2Controller : ControllerBase
         await _versionFileManager.CountDownload(version, platform, downloadReason);
 
         HttpContext.Response.Headers["x-file-hash"] = versionFile.FileHash;
-        return File(versionFile.Bytes, "application/octet-stream", versionFile.FileName);
+        HttpContext.Response.ContentLength = versionFile.FileStream.Length;
+        return new FileStreamResult(versionFile.FileStream, "application/octet-stream") 
+        { 
+            FileDownloadName = versionFile.FileName
+        };
     }
 }

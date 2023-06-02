@@ -2,15 +2,15 @@ namespace MacroDeck.UpdateService.Core.DataTypes;
 
 public class VersionFileResult
 {
-    public byte[] Bytes { get; set; }
+    public Stream FileStream { get; set; }
 
     public string FileHash { get; set; }
     
     public string FileName { get; set; }
 
-    public VersionFileResult(byte[] bytes, string fileHash, string fileName)
+    public VersionFileResult(Stream fileStream, string fileHash, string fileName)
     {
-        Bytes = bytes;
+        FileStream = fileStream;
         FileHash = fileHash;
         FileName = fileName;
     }

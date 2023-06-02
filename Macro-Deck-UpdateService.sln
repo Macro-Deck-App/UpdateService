@@ -12,9 +12,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{42
 		Directory.Packages.props = Directory.Packages.props
 		.gitignore = .gitignore
 		README.md = README.md
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AA9F0242-81A2-43C5-BAFE-20D81403700E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\base-image-build.yml = .github\workflows\base-image-build.yml
+		.github\workflows\final-image-build.yml = .github\workflows\final-image-build.yml
+		.github\workflows\tests.yml = .github\workflows\tests.yml
+		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC06E485-1CA2-406B-A6FB-9FF9C8398556}"
 EndProject

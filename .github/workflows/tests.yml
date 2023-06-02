@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: updateservice
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: updateserviceintegrationtest
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Run Tests inside Docker container
+        run: |
+            docker build . \
+            --file Dockerfile \
+            --target build \
+            --tag ghcr.io/${{ github.repository_owner }}/macro-deck-updateservice_base:${{ github.sha }}
+            docker run --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest \
+            --rm ghcr.io/${{ github.repository_owner }}/macro-deck-updateservice_base:${{ github.sha }} dotnet test

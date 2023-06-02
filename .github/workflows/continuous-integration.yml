@@ -1,0 +1,30 @@
+name: Continuous integration testing
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - '**'
+
+jobs:
+  base_image_build:
+    name: Base image build
+    uses: ./.github/workflows/base-image-build.yml
+    if: ${{ github.event_name != 'push' || github.event.pull_request.head.sha != github.sha }}
+    secrets: inherit
+  final_image_build:
+    name: UpdateService image build
+    uses: ./.github/workflows/final-image-build.yml
+    needs: [base_image_build]
+    if: ${{ github.event_name != 'push' || github.event.pull_request.head.sha != github.sha }}
+    secrets: inherit
+  tests:
+    name: Test
+    uses: ./.github/workflows/tests.yml
+    needs: [base_image_build]
+    if: ${{ github.event_name != 'push' || github.event.pull_request.head.sha != github.sha }}
+    secrets: inherit

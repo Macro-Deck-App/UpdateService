@@ -20,7 +20,8 @@ public class Setup
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         if (EnvironmentHelper.IsGitHubIntegrationTest)
         {
-            UpdateServiceConfiguration.DatabaseConnectionStringOverride = "";   
+            UpdateServiceConfiguration.DatabaseConnectionStringOverride =
+                "User ID=updateservice;Password=test;Database=updateserviceintegrationtest;Host=localhost;Port=5432";
         }
 
         var webHostBuilder = new WebHostBuilder()

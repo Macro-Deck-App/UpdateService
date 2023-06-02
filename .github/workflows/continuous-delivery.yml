@@ -2,6 +2,8 @@ name: Continuous delivery
 
 on:
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   base_image_build:

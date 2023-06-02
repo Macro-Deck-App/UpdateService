@@ -1,4 +1,5 @@
 using AutoMapper;
+using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 using MacroDeck.UpdateService.Core.DataTypes.ApiV2;
 using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
@@ -12,15 +13,28 @@ public class ApiV2Controller : ControllerBase
 {
     private readonly IVersionManager _versionManager;
     private readonly IVersionFileManager _versionFileManager;
+    private readonly IFileDownloadRepository _fileDownloadRepository;
     private readonly IMapper _mapper;
 
-    public ApiV2Controller(IVersionManager versionManager, IVersionFileManager versionFileManager, IMapper mapper)
+    public ApiV2Controller(
+        IVersionManager versionManager,
+        IVersionFileManager versionFileManager,
+        IFileDownloadRepository fileDownloadRepository,
+        IMapper mapper)
     {
         _versionManager = versionManager;
         _versionFileManager = versionFileManager;
+        _fileDownloadRepository = fileDownloadRepository;
         _mapper = mapper;
     }
-    
+
+    [HttpGet("totaldownloads")]
+    [AllowAnonymous]
+    public async ValueTask<long> GetTotalDownloads()
+    {
+        return await _fileDownloadRepository.CountAllFirstTimeDownloads();
+    }
+
     [HttpGet("check/{installedVersion}/{platform}")]
     [AllowAnonymous]
     public async ValueTask<ApiV2CheckResult> CheckForUpdates(

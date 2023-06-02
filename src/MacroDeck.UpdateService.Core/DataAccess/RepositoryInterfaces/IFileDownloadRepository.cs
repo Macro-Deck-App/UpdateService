@@ -4,4 +4,5 @@ namespace MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 
 public interface IFileDownloadRepository : IBaseRepository<FileDownloadEntity>
 {
+    public ValueTask<long> CountAllFirstTimeDownloads();
 }

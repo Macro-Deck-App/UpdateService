@@ -67,6 +67,27 @@ Returns an `ApiV2VersionInfo` object similar to the Get Latest Version endpoint.
 
 ---
 
+## **Endpoint: Download Latest Version**
+
+`GET /v2/latest/download/{platform}`
+
+Downloads the latest version for the specified platform.
+
+### Parameters
+
+- `platform`: The platform identifier for the download.
+
+### Query Parameters
+
+- `downloadReason`: Indicates the reason for download (See DownloadReason enum values). Defaults to `FirstDownload`.
+- `previewVersions`: Boolean value that indicates if preview versions should be considered. Defaults to `false`.
+
+### Responses
+
+Returns a byte array representing the file contents of the version. A header "x-file-hash" with the file's hash is also set in the response.
+
+---
+
 ## **Endpoint: Download Version**
 
 `GET /v2/{version}/download/{platform}`

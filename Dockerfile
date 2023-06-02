@@ -12,5 +12,5 @@ COPY ./tests/MacroDeck.UpdateService.Tests.Shared .
 COPY ./tests/MacroDeck.UpdateService.Tests.IntegrationTests .
 COPY ./tests/MacroDeck.UpdateService.Tests.UnitTests .
 
-RUN dotnet restore /src
+RUN dotnet restore ./Macro-Deck-UpdateService.sln
 COPY . /src

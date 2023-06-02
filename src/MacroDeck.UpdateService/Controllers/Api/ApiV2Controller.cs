@@ -51,6 +51,17 @@ public class ApiV2Controller : ControllerBase
         return _mapper.Map<ApiV2VersionInfo>(versionInfo);
     }
     
+    [HttpGet("latest/download/{platform}")]
+    [AllowAnonymous]
+    public async ValueTask<ActionResult<byte[]>> DownloadLatestVersion(
+        PlatformIdentifier platform,
+        [FromQuery] DownloadReason downloadReason = DownloadReason.FirstDownload,
+        [FromQuery] bool previewVersions = false)
+    {
+        var latestVersion = await _versionManager.GetLatestVersion(platform, previewVersions);
+        return await DownloadVersion(latestVersion.Version, platform, downloadReason);
+    }
+    
     [HttpGet("{version}/download/{platform}")]
     [AllowAnonymous]
     public async ValueTask<ActionResult<byte[]>> DownloadVersion(

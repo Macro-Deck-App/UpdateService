@@ -56,7 +56,7 @@ public class VersionFileManager : IVersionFileManager
 
         var fileHash = data.GenerateSha256Hash();
 
-        var originalFileName = $"macro-deck-{platformIdentifier}-{version}{fileExtension}".ToLower();
+        var originalFileName = $"macro-deck-{version}{fileExtension}-{platformIdentifier}".ToLower();
 
         var versionFileEntity = new VersionFileEntity
         {

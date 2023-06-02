@@ -22,6 +22,7 @@ public static class Program
                 hostBuilder.UseStartup<Startup>();
                 hostBuilder.ConfigureKestrel(options =>
                 {
+                    options.Limits.MaxRequestBodySize = long.MaxValue;
                     options.ListenAnyIP(EnvironmentHelper.HostingPort);
                 });
             }).Build();

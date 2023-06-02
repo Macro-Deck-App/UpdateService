@@ -16,7 +16,8 @@ public class Startup
         {
             var loggerFactory = new LoggerFactory().AddSerilog();
             options.UseLoggerFactory(loggerFactory);
-            options.UseNpgsql(UpdateServiceConfiguration.DatabaseConnectionString);
+            options.UseNpgsql(UpdateServiceConfiguration.DatabaseConnectionStringOverride
+                              ?? UpdateServiceConfiguration.DatabaseConnectionString);
             options.AddInterceptors(new SaveChangesInterceptor());
         });
         services.AddSwagger();

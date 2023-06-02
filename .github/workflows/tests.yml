@@ -33,4 +33,4 @@ jobs:
         run: docker pull ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
 
       - name: Run Tests inside Docker container
-        run: docker run --rm --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test
+        run: docker run --rm --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest --network container:postgres ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }} dotnet test

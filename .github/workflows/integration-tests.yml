@@ -37,4 +37,4 @@ jobs:
         run: >
           docker run --rm --network="host" --env ASPNETCORE_ENVIRONMENT=GitHubIntegrationTest
           ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
-          -c "cd tests/MacroDeck.UpdateService.Tests.IntegrationTests/ ; dotnet test"
+          "cd tests/MacroDeck.UpdateService.Tests.IntegrationTests/ ; dotnet test"

@@ -21,4 +21,4 @@ jobs:
       - name: Run Tests inside Docker container
         run: >
           docker run --rm ghcr.io/macro-deck-app/macro-deck-updateservice_base:${{ github.sha }}
-          -c "cd tests/MacroDeck.UpdateService.Tests.UnitTests/ ; dotnet test"
+          "cd tests/MacroDeck.UpdateService.Tests.UnitTests/ ; dotnet test"

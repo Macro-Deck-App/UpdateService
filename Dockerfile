@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0.302-bullseye-slim-amd64 AS restore
-FROM mcr.microsoft.com/dotnet/aspnet:7.0.5-bullseye-slim-amd64 AS base
 
 WORKDIR /src
 
@@ -15,5 +14,3 @@ COPY ./tests/MacroDeck.UpdateService.Tests.UnitTests .
 
 RUN dotnet restore /src
 COPY . /src
-
-FROM restore AS build

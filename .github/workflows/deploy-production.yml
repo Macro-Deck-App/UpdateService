@@ -1,17 +1,18 @@
-name: Deploy production
+name: Deploy Production
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
-  build_and_test:
-    name: Build and test
-    uses: ./.github/workflows/continuous-integration.yml
-    secrets: inherit
-  deploy_production:
-    name: Deploy production
-    needs: [build_and_test]
+  deploy:
+    name: Deploy Production
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - name: Updating the image on the server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DOCKER_HOST }}
+          username: ${{ secrets.GITHUBWORKFLOWS_USER }}
+          password: ${{ secrets.GITHUBWORKFLOWS_USER_PASSWORD }}
+          port: ${{ secrets.DOCKER_HOST_PORT }}
+          script: ./scripts/UpdateService/update_production.sh ${{ github.sha }}

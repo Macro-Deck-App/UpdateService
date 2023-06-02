@@ -1,0 +1,16 @@
+name: Continuous delivery
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    name: Build and test
+    uses: ./.github/workflows/continuous-integration.yml
+    secrets: inherit
+  deploy_production:
+    name: Deploy production
+    needs: [build_and_test]
+    environment: 'production'
+    uses: ./.github/workflows/deploy-production.yml
+    secrets: inherit

@@ -24,9 +24,8 @@ public static partial class UpdateServiceConfiguration
         if (EnvironmentHelper.IsStagingOrProduction)
         {
             Logger.Information(
-                "Service was started in testing or production environment. Will download config from ConfigService");
-            Task.Run(async () => await UpdateConfig(ConfigPath, CancellationToken.None))
-                .Wait();   
+                "Service was started in staging or production environment. Will download config from ConfigService");
+            UpdateConfig(ConfigPath, CancellationToken.None).Wait();
         }
 
         var configBuilder = new ConfigurationBuilder();
@@ -37,16 +36,16 @@ public static partial class UpdateServiceConfiguration
         Logger.Information("Configuration loaded");
     }
 
-        private static JsonConfigurationSource LoadConfigurationFile(string configPath)
+    private static JsonConfigurationSource LoadConfigurationFile(string configPath)
+    {
+        return new JsonConfigurationSource
         {
-            return new JsonConfigurationSource
-            {
-                Path = configPath,
-                ReloadOnChange = true,
-                ReloadDelay = 2000,
-                Optional = false
-            };
-        }
+            Path = configPath,
+            ReloadOnChange = true,
+            ReloadDelay = 2000,
+            Optional = false
+        };
+    }
 
     private static string GetString(string key)
     {

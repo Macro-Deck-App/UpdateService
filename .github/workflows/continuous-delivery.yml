@@ -40,4 +40,6 @@ jobs:
           username: ${{ secrets.GITHUBWORKFLOWS_USER }}
           password: ${{ secrets.GITHUBWORKFLOWS_USER_PASSWORD }}
           port: ${{ secrets.DOCKER_HOST_PORT }}
-          script: ./scripts/UpdateService/update_production.sh ${{ github.sha }}
+          script: |
+            cd scripts/UpdateService
+            ./update_production.sh ${{ github.sha }}

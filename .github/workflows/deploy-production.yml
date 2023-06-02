@@ -1,0 +1,17 @@
+name: Deploy production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    name: Build and test
+    uses: ./.github/workflows/continuous-integration.yml
+    secrets: inherit
+  deploy_production:
+    name: Deploy production
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3

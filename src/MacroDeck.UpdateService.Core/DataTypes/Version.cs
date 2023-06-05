@@ -7,23 +7,25 @@ public partial struct Version
     public int Major { get; set; }
     public int Minor { get; set; }
     public int Patch { get; set; }
-    public int? PreviewNo { get; set; }
+    public int? BetaNo { get; set; }
 
-    public Version(int major, int minor, int patch, int? previewNo = null)
+    public Version(int major, int minor, int patch, int? betaNo = null)
     {
         Major = major;
         Minor = minor;
         Patch = patch;
-        PreviewNo = previewNo;
+        BetaNo = betaNo;
     }
 
-    public bool IsPreviewVersion => PreviewNo.HasValue;
+    public bool IsBetaVersion => BetaNo.HasValue;
+
+    public string VersionName => BetaNo.HasValue
+        ? $"{Major}.{Minor}.{Patch}b{BetaNo}"
+        : $"{Major}.{Minor}.{Patch}";
 
     public override string ToString()
     {
-        return PreviewNo.HasValue
-            ? $"{Major}.{Minor}.{Patch}-preview{PreviewNo}"
-            : $"{Major}.{Minor}.{Patch}";
+        return VersionName;
     }
 
     public static bool TryParse(string versionString, out Version result)
@@ -53,14 +55,14 @@ public partial struct Version
         var patch = int.Parse(match.Groups["patch"].Value);
 
         int? previewNo = null;
-        if (match.Groups["preview"].Success)
+        if (match.Groups["b"].Success)
         {
-            previewNo = int.Parse(match.Groups["preview"].Value);
+            previewNo = int.Parse(match.Groups["b"].Value);
         }
 
         return new Version(major, minor, patch, previewNo);
     }
 
-    [GeneratedRegex("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-preview(?<preview>\\d+))?$")]
+    [GeneratedRegex("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(b(?<b>\\d+))?$")]
     private static partial Regex VersionRegex();
 }

@@ -1,5 +1,4 @@
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
-using MacroDeck.UpdateService.Core.Enums;
 
 namespace MacroDeck.UpdateService.Tests.IntegrationTests.DataAccess.DatabaseSeeder;
 
@@ -20,9 +19,8 @@ public class VersionDatabaseSeeder
             Major = 1,
             Minor = 0,
             Patch = 0,
-            PreviewNo = null,
-            IsPreviewVersion = false,
-            VersionState = VersionState.Published,
+            PreReleaseNo = null,
+            IsBetaVersion = false
         };
         
         update?.Invoke(versionEntity);

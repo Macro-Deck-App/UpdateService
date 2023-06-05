@@ -13,7 +13,6 @@ public static class VersionEntityMock
             {
                 Id = 1,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-10),
-                VersionState = VersionState.Published,
                 Version = "1.0.0",
                 Major = 1,
                 Minor = 0,
@@ -26,17 +25,8 @@ public static class VersionEntityMock
                         CreatedTimestamp = DateTime.Now.AddMinutes(-10),
                         PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
-                        FileDownloads = new List<FileDownloadEntity>()
-                        {
-                            new()
-                            {
-                                Id = 1,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-10),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 1
-                            }
-                        },
-                        VersionId = 1
+                        VersionId = 1,
+                        FileProvider = FileProvider.GitHub
                     }
                 }
             },
@@ -44,7 +34,6 @@ public static class VersionEntityMock
             {
                 Id = 2,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-9),
-                VersionState = VersionState.Published,
                 Version = "1.1.0",
                 Major = 1,
                 Minor = 1,
@@ -57,24 +46,8 @@ public static class VersionEntityMock
                         CreatedTimestamp = DateTime.Now.AddMinutes(-9),
                         PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
-                        FileDownloads = new List<FileDownloadEntity>()
-                        {
-                            new()
-                            {
-                                Id = 2,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-9),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 2
-                            },
-                            new()
-                            {
-                                Id = 3,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-9),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 2
-                            }
-                        },
-                        VersionId = 2
+                        VersionId = 2,
+                        FileProvider = FileProvider.GitHub
                     }
                 }
             },
@@ -82,7 +55,6 @@ public static class VersionEntityMock
             {
                 Id = 3,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-8),
-                VersionState = VersionState.Published,
                 Version = "1.2.0",
                 Major = 1,
                 Minor = 2,
@@ -95,24 +67,8 @@ public static class VersionEntityMock
                         CreatedTimestamp = DateTime.Now.AddMinutes(-8),
                         PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
-                        FileDownloads = new List<FileDownloadEntity>()
-                        {
-                            new()
-                            {
-                                Id = 4,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-8),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 3
-                            },
-                            new()
-                            {
-                                Id = 5,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-8),
-                                DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 3
-                            }
-                        },
-                        VersionId = 3
+                        VersionId = 3,
+                        FileProvider = FileProvider.GitHub
                     }
                 }
             },
@@ -120,13 +76,12 @@ public static class VersionEntityMock
             {
                 Id = 4,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                VersionState = VersionState.Published,
-                Version = "1.3.0-preview1",
+                Version = "1.3.0b1",
                 Major = 1,
                 Minor = 3,
                 Patch = 0,
-                PreviewNo = 1,
-                IsPreviewVersion = true,
+                PreReleaseNo = 1,
+                IsBetaVersion = true,
                 Files = new List<VersionFileEntity>
                 {
                     new()
@@ -135,31 +90,8 @@ public static class VersionEntityMock
                         CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                         PlatformIdentifier = PlatformIdentifier.WinX64,
                         FileHash = "1234",
-                        FileDownloads = new List<FileDownloadEntity>()
-                        {
-                            new()
-                            {
-                                Id = 6,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 5
-                            },
-                            new()
-                            {
-                                Id = 7,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                                DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 5
-                            },
-                            new()
-                            {
-                                Id = 8,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                                DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 5
-                            }
-                        },
-                        VersionId = 4
+                        VersionId = 4,
+                        FileProvider = FileProvider.GitHub
                     },
                     new()
                     {
@@ -167,24 +99,8 @@ public static class VersionEntityMock
                         CreatedTimestamp = DateTime.Now.AddMinutes(-7),
                         PlatformIdentifier = PlatformIdentifier.LinuxX64,
                         FileHash = "1234",
-                        FileDownloads = new List<FileDownloadEntity>()
-                        {
-                            new()
-                            {
-                                Id = 9,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                                DownloadReason = DownloadReason.FirstDownload,
-                                VersionFileId = 6
-                            },
-                            new()
-                            {
-                                Id = 10,
-                                CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                                DownloadReason = DownloadReason.UpdateDownload,
-                                VersionFileId = 6
-                            }
-                        },
-                        VersionId = 4
+                        VersionId = 4,
+                        FileProvider = FileProvider.GitHub
                     }
                 }
             }

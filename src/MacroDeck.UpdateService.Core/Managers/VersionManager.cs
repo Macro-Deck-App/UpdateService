@@ -17,6 +17,75 @@ public class VersionManager : IVersionManager
         _versionRepository = versionRepository;
     }
 
+    public async ValueTask<Version> GetNextMajorVersion()
+    {
+        var currentVersion = await GetCurrentVersion(true);
+        return new Version
+        {
+            Major = currentVersion.IsBetaVersion ? currentVersion.Major : currentVersion.Major + 1, 
+            Minor = 0,
+            Patch = 0,
+            BetaNo = null
+        };
+    }
+
+    public async ValueTask<Version> GetNextMinorVersion()
+    {
+        var currentVersion = await GetCurrentVersion(true);
+        return currentVersion with
+        {
+            Minor = currentVersion.IsBetaVersion ? currentVersion.Minor : currentVersion.Minor + 1,
+            Patch = 0,
+            BetaNo = null
+        };
+    }
+
+    public async ValueTask<Version> GetNextPatchVersion()
+    {
+        var currentVersion = await GetCurrentVersion();
+        return currentVersion with
+        {
+            Patch = currentVersion.Patch + 1,
+            BetaNo = null
+        };
+    }
+
+    public async ValueTask<Version> GetNextMajorBetaVersion()
+    {
+        var currentVersion = await GetCurrentVersion(true);
+        if (currentVersion.IsBetaVersion)
+        {
+            return currentVersion with
+            {
+                BetaNo = currentVersion.BetaNo + 1
+            };
+        }
+
+        var nextMajorVersion = await GetNextMajorVersion();
+        return nextMajorVersion with
+        {
+            BetaNo = 1
+        };
+    }
+
+    public async ValueTask<Version> GetNextMinorBetaVersion()
+    {
+        var currentVersion = await GetCurrentVersion(true);
+        if (currentVersion.IsBetaVersion)
+        {
+            return currentVersion with
+            {
+                BetaNo = currentVersion.BetaNo + 1
+            };
+        }
+
+        var nextMinorVersion = await GetNextMinorVersion();
+        return nextMinorVersion with
+        {
+            BetaNo = 1
+        };
+    }
+
     public async ValueTask<VersionInfo> GetLatestVersion(PlatformIdentifier platformIdentifier, bool includePreviewVersions)
     {
         return await _versionRepository.GetLatestVersion(platformIdentifier, includePreviewVersions)
@@ -39,8 +108,7 @@ public class VersionManager : IVersionManager
 
         versionEntity = new VersionEntity
         {
-            Version = version,
-            VersionState = VersionState.Unpublished
+            Version = version
         };
 
         await _versionRepository.InsertAsync(versionEntity);
@@ -72,5 +140,16 @@ public class VersionManager : IVersionManager
             NewerVersionAvailable = true,
             Version = newerVersion.Version
         };
+    }
+
+    private async ValueTask<Version> GetCurrentVersion(bool includeBetaVersions = false)
+    {
+        var currentVersionInfo = await _versionRepository.GetLatestVersion(null, includeBetaVersions);
+        if (currentVersionInfo == null)
+        {
+            throw new NoVersionFoundException();
+        }
+        
+        return Version.Parse(currentVersionInfo.Version);
     }
 }

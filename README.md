@@ -1,126 +1,98 @@
-# MacroDeck.UpdateService API v2
+# MacroDeck Update Service API V2 Documentation
 
-This API provides endpoints to check for software updates, fetch version details, and download specific versions for different platforms.
+The `ApiV2Controller` in the MacroDeck Update Service provides methods for managing and interacting with software versions. This controller is part of the API V2 and includes methods for retrieving the next major, minor, or patch version, validating version names, checking for updates, and getting the latest versions.
 
-## **Endpoint: Check for Updates**
+## Endpoints
 
-`GET /v2/check/{installedVersion}/{platform}`
+### GET /v2/next/major
 
-Checks if there is a newer version available than the installed one.
+This endpoint returns the next major version of the software.
 
-### Parameters
+- **Parameters**: None.
+- **Returns**: An object representing the `Version`.
 
-- `installedVersion`: The current installed version of the software.
-- `platform`: The platform identifier where the software is running (See PlatformIdentifier enum values).
+### GET /v2/next/minor
 
-### Query Parameters
+This endpoint returns the next minor version of the software.
 
-- `previewVersions`: Boolean value that indicates if preview versions should be considered. Defaults to `false`.
+- **Parameters**: None.
+- **Returns**: An object representing the `Version`.
 
-### Responses
+### GET /v2/next/patch
 
-Returns an `ApiV2CheckResult` object with properties:
+This endpoint returns the next patch version of the software.
 
-- `NewerVersionAvailable`: Boolean indicating if a newer version is available.
-- `Version`: String representing the newer version, if available.
+- **Parameters**: None.
+- **Returns**: An object representing the `Version`.
 
----
+### GET /v2/next/major/beta
 
-## **Endpoint: Get Latest Version**
+This endpoint returns the next major beta version of the software.
 
-`GET /v2/latest/{platform}`
+- **Parameters**: None.
+- **Returns**: An object representing the `Version`.
 
-Fetches the latest software version details for the specified platform.
+### GET /v2/next/minor/beta
 
-### Parameters
+This endpoint returns the next minor beta version of the software.
 
-- `platform`: The platform identifier (See PlatformIdentifier enum values).
+- **Parameters**: None.
+- **Returns**: An object representing the `Version`.
 
-### Query Parameters
+### GET /v2/validate/versionname/{version}
 
-- `previewVersions`: Boolean value that indicates if preview versions should be considered. Defaults to `false`.
+This endpoint validates a version name.
 
-### Responses
+- **Parameters**:
+    - `version`: A string representation of the version to be validated.
+- **Returns**: A boolean indicating whether the version name is valid or not.
 
-Returns an `ApiV2VersionInfo` object with properties:
+### GET /v2/check/{installedVersion}/{platform}
 
-- `Version`: String representing the version number.
-- `VersionState`: State of the version.
-- `Downloads`: Long representing the download count.
-- `SupportedPlatforms`: Array of supported platforms.
+This endpoint checks for newer versions of the software based on the currently installed version and the platform.
 
----
+- **Parameters**:
+    - `installedVersion`: A string representation of the installed version.
+    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
+    - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the check.
+- **Returns**: An object representing the `ApiV2CheckResult`.
 
-## **Endpoint: Get Version**
+### GET /v2/latest/{platform}
 
-`GET /v2/{version}`
+This endpoint returns the latest version of the software for a specific platform.
 
-Fetches the specific software version details.
+- **Parameters**:
+    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
+    - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the response.
+- **Returns**: An object representing the `ApiV2VersionInfo`.
 
-### Parameters
+### GET /v2/{version}
 
-- `version`: The version of the software to retrieve details for.
+This endpoint returns information about a specific version.
 
-### Responses
+- **Parameters**:
+    - `version`: A string representation of the version.
+- **Returns**: An object representing the `ApiV2VersionInfo`.
 
-Returns an `ApiV2VersionInfo` object similar to the Get Latest Version endpoint.
+### GET /v2/{version}/fileSize/{platform}
 
----
+This endpoint returns the file size of a specific version for a specific platform.
 
-## **Endpoint: Download Latest Version**
+- **Parameters**:
+    - `version`: A string representation of the version.
+    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
+- **Returns**: The file size as a double.
 
-`GET /v2/latest/download/{platform}`
+## Data Types
 
-Downloads the latest version for the specified platform.
+### `Version`
 
-### Parameters
+The `Version` struct represents a version of the software and includes fields for the major, minor, and patch versions, as well as an optional beta number. This struct also provides methods for parsing and validating version strings.
 
-- `platform`: The platform identifier for the download.
+### `ApiV2VersionInfo`
 
-### Query Parameters
+The `ApiV2VersionInfo` class provides information about a software version, including its version string and a dictionary of platforms and their respective version strings.
 
-- `downloadReason`: Indicates the reason for download (See DownloadReason enum values). Defaults to `FirstDownload`.
-- `previewVersions`: Boolean value that indicates if preview versions should be considered. Defaults to `false`.
+### `ApiV2CheckResult`
 
-### Responses
-
-Returns a byte array representing the file contents of the version. A header "x-file-hash" with the file's hash is also set in the response.
-
----
-
-## **Endpoint: Download Version**
-
-`GET /v2/{version}/download/{platform}`
-
-Downloads the specific version for the specified platform.
-
-### Parameters
-
-- `version`: The version of the software to download.
-- `platform`: The platform identifier for the download.
-
-### Query Parameters
-
-- `downloadReason`: Indicates the reason for download (See DownloadReason enum values). Defaults to `FirstDownload`.
-
-### Responses
-
-Returns a byte array representing the file contents of the version. A header "x-file-hash" with the file's hash is also set in the response.
-
----
-
-## Enums
-
-### **PlatformIdentifier**
-
-- `WinX64`: Windows 64-bit
-- `MacX64`: Mac OS 64-bit
-- `MacArm64`: Mac OS Arm 64-bit
-- `LinuxX64`: Linux 64-bit
-- `LinuxArm64`: Linux Arm 64-bit
-- `LinuxArm32`: Linux Arm 32-bit
-
-### **DownloadReason**
-
-- `FirstDownload`: The version is being downloaded for the first time.
-- `UpdateDownload`: The version is being downloaded as an update to a previous version.
+The `ApiV2CheckResult` class provides the result of a check for

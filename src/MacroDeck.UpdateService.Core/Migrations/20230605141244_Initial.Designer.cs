@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MacroDeck.UpdateService.Core.Migrations
 {
     [DbContext(typeof(UpdateServiceContext))]
-    [Migration("20230602163335_AddFileSize")]
-    partial class AddFileSize
+    [Migration("20230605141244_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,36 +24,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.FileDownloadEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedTimestamp")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_timestamp");
-
-                    b.Property<int>("DownloadReason")
-                        .HasColumnType("integer")
-                        .HasColumnName("download_reason");
-
-                    b.Property<int>("VersionFileId")
-                        .HasColumnType("integer")
-                        .HasColumnName("version_file_ref");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DownloadReason");
-
-                    b.HasIndex("VersionFileId");
-
-                    b.ToTable("file_downloads", "updateservice");
-                });
 
             modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.VersionEntity", b =>
                 {
@@ -68,11 +38,11 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_timestamp");
 
-                    b.Property<bool>("IsPreviewVersion")
+                    b.Property<bool>("IsBetaVersion")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
-                        .HasColumnName("is_preview_version");
+                        .HasColumnName("is_pre_release_version");
 
                     b.Property<int>("Major")
                         .HasColumnType("integer")
@@ -86,25 +56,19 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("version_patch");
 
-                    b.Property<int?>("PreviewNo")
+                    b.Property<int?>("PreReleaseNo")
                         .HasColumnType("integer")
-                        .HasColumnName("version_preview_no");
+                        .HasColumnName("version_pre_release_no");
 
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("version_string");
 
-                    b.Property<int>("VersionState")
-                        .HasColumnType("integer")
-                        .HasColumnName("version_state");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Version")
                         .IsUnique();
-
-                    b.HasIndex("VersionState");
 
                     b.ToTable("versions", "updateservice");
                 });
@@ -127,23 +91,22 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         .HasColumnType("text")
                         .HasColumnName("hash");
 
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint")
-                        .HasColumnName("file_size");
-
-                    b.Property<string>("OriginalFileName")
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("file_name");
 
+                    b.Property<int>("FileProvider")
+                        .HasColumnType("integer")
+                        .HasColumnName("file_provider");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint")
+                        .HasColumnName("file_size");
+
                     b.Property<int>("PlatformIdentifier")
                         .HasColumnType("integer")
                         .HasColumnName("platform_identifier");
-
-                    b.Property<string>("SavedFileName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("saved_name");
 
                     b.Property<int>("VersionId")
                         .HasColumnType("integer")
@@ -154,17 +117,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
                     b.HasIndex("VersionId");
 
                     b.ToTable("version_files", "updateservice");
-                });
-
-            modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.FileDownloadEntity", b =>
-                {
-                    b.HasOne("MacroDeck.UpdateService.Core.DataAccess.Entities.VersionFileEntity", "VersionFile")
-                        .WithMany("FileDownloads")
-                        .HasForeignKey("VersionFileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("VersionFile");
                 });
 
             modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.VersionFileEntity", b =>
@@ -181,11 +133,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
             modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.VersionEntity", b =>
                 {
                     b.Navigation("Files");
-                });
-
-            modelBuilder.Entity("MacroDeck.UpdateService.Core.DataAccess.Entities.VersionFileEntity", b =>
-                {
-                    b.Navigation("FileDownloads");
                 });
 #pragma warning restore 612, 618
         }

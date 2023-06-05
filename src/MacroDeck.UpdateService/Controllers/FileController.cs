@@ -1,4 +1,5 @@
 using MacroDeck.UpdateService.Core.Authorization;
+using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ErrorHandling.Exceptions;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
@@ -19,24 +20,22 @@ public class FileController : UpdateServiceControllerBase
 
     [HttpPost("{version}/{platform}")]
     [TokenAuthorization]
-    public async ValueTask<IActionResult> UploadFile(
-        IFormFile file,
+    public async ValueTask<IActionResult> CreateFile(
         string version,
-        PlatformIdentifier platform)
+        PlatformIdentifier platform,
+        [FromBody] CreateFileRequest createFileRequest)
     {
         if (!Version.TryParse(version, out var versionStruct))
         {
             throw new CannotParseVersionException();
         }
 
-        if (file == null || file.Length == 0)
-        {
-            throw new NoFileUploadedException();
-        }
-
-        var stream = file.OpenReadStream();
-        var fileExtension = Path.GetExtension(file.FileName);
-
-        return await _versionFileManager.UploadVersionFile(stream, fileExtension, versionStruct, platform);
+        return await _versionFileManager.CreateVersionFile(
+            createFileRequest.FileProvider,
+            createFileRequest.FileName,
+            createFileRequest.FileHash,
+            createFileRequest.FileSize,
+            versionStruct,
+            platform);
     }
 }

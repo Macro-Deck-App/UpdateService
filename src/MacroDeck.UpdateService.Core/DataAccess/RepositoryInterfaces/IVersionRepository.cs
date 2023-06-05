@@ -7,7 +7,7 @@ namespace MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 
 public interface IVersionRepository : IBaseRepository<VersionEntity>
 {
-    public ValueTask<VersionInfo?> GetLatestVersion(PlatformIdentifier platformIdentifier, bool includePreviewVersions);
+    public ValueTask<VersionInfo?> GetLatestVersion(PlatformIdentifier? platformIdentifier, bool includePreviewVersions);
 
     public ValueTask<VersionInfo?> GetVersionInfo(string version);
 

@@ -1,10 +1,10 @@
 using AutoMapper;
-using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 using MacroDeck.UpdateService.Core.DataTypes.ApiV2;
 using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Controllers.Api;
 
@@ -13,31 +13,63 @@ public class ApiV2Controller : ControllerBase
 {
     private readonly IVersionManager _versionManager;
     private readonly IVersionFileManager _versionFileManager;
-    private readonly IFileDownloadRepository _fileDownloadRepository;
     private readonly IMapper _mapper;
 
     public ApiV2Controller(
         IVersionManager versionManager,
         IVersionFileManager versionFileManager,
-        IFileDownloadRepository fileDownloadRepository,
         IMapper mapper)
     {
         _versionManager = versionManager;
         _versionFileManager = versionFileManager;
-        _fileDownloadRepository = fileDownloadRepository;
         _mapper = mapper;
     }
 
-    [HttpGet("totaldownloads")]
+    [HttpGet("next/major")]
     [AllowAnonymous]
-    public async ValueTask<long> GetTotalDownloads()
+    public async ValueTask<ActionResult<Version>> GetNextMajorVersion()
     {
-        return await _fileDownloadRepository.CountAllFirstTimeDownloads();
+        return await _versionManager.GetNextMajorVersion();
     }
+    
+    [HttpGet("next/minor")]
+    [AllowAnonymous]
+    public async ValueTask<ActionResult<Version>> GetNextMinorVersion()
+    {
+        return await _versionManager.GetNextMinorVersion();
+    }
+    
+    [HttpGet("next/patch")]
+    [AllowAnonymous]
+    public async ValueTask<ActionResult<Version>> GetNextPatchVersion()
+    {
+        return await _versionManager.GetNextPatchVersion();
+    }
+    
+    [HttpGet("next/major/beta")]
+    [AllowAnonymous]
+    public async ValueTask<ActionResult<Version>> GetNextMajorBetaVersion()
+    {
+        return await _versionManager.GetNextMajorBetaVersion();
+    }
+    
+    [HttpGet("next/minor/beta")]
+    [AllowAnonymous]
+    public async ValueTask<ActionResult<Version>> GetNextMinorBetaVersion()
+    {
+        return await _versionManager.GetNextMinorBetaVersion();
+    }
+
+    [HttpGet("validate/versionname/{version}")]
+    [AllowAnonymous]
+    public ActionResult<bool> ValidateVersionName(string version)
+    {
+        return Version.TryParse(version, out _);
+    } 
 
     [HttpGet("check/{installedVersion}/{platform}")]
     [AllowAnonymous]
-    public async ValueTask<ApiV2CheckResult> CheckForUpdates(
+    public async ValueTask<ActionResult<ApiV2CheckResult>> CheckForUpdates(
         string installedVersion,
         PlatformIdentifier platform,
         [FromQuery] bool previewVersions = false)
@@ -71,34 +103,5 @@ public class ApiV2Controller : ControllerBase
         PlatformIdentifier platform)
     {
         return await _versionFileManager.GetFileSizeMb(version, platform);
-    }
-
-    [HttpGet("latest/download/{platform}")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<byte[]>> DownloadLatestVersion(
-        PlatformIdentifier platform,
-        [FromQuery] DownloadReason downloadReason = DownloadReason.FirstDownload,
-        [FromQuery] bool previewVersions = false)
-    {
-        var latestVersion = await _versionManager.GetLatestVersion(platform, previewVersions);
-        return await DownloadVersion(latestVersion.Version, platform, downloadReason);
-    }
-    
-    [HttpGet("{version}/download/{platform}")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult> DownloadVersion(
-        string version,
-        PlatformIdentifier platform,
-        [FromQuery] DownloadReason downloadReason = DownloadReason.FirstDownload)
-    {
-        var versionFile = await _versionFileManager.GetFile(version, platform);
-        await _versionFileManager.CountDownload(version, platform, downloadReason);
-
-        HttpContext.Response.Headers["x-file-hash"] = versionFile.FileHash;
-        HttpContext.Response.ContentLength = versionFile.FileStream.Length;
-        return new FileStreamResult(versionFile.FileStream, "application/octet-stream") 
-        { 
-            FileDownloadName = versionFile.FileName
-        };
     }
 }

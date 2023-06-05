@@ -4,8 +4,5 @@
   },
   "authentication": {
     "admin_token": "test"
-  },
-  "paths": {
-    "data_path": "__testdata__"
   }
 }

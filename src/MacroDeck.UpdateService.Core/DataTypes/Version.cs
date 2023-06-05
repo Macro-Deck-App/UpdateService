@@ -20,7 +20,7 @@ public partial struct Version
     public bool IsBetaVersion => BetaNo.HasValue;
 
     public string VersionName => BetaNo.HasValue
-        ? $"{Major}.{Minor}.{Patch}b{BetaNo}"
+        ? $"{Major}.{Minor}.{Patch}-b{BetaNo}"
         : $"{Major}.{Minor}.{Patch}";
 
     public override string ToString()
@@ -55,14 +55,14 @@ public partial struct Version
         var patch = int.Parse(match.Groups["patch"].Value);
 
         int? previewNo = null;
-        if (match.Groups["b"].Success)
+        if (match.Groups["beta"].Success)
         {
-            previewNo = int.Parse(match.Groups["b"].Value);
+            previewNo = int.Parse(match.Groups["beta"].Value);
         }
 
         return new Version(major, minor, patch, previewNo);
     }
 
-    [GeneratedRegex("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(b(?<b>\\d+))?$")]
+    [GeneratedRegex("^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-b(?<beta>\\d+))?$")]
     private static partial Regex VersionRegex();
 }

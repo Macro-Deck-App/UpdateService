@@ -76,7 +76,7 @@ public static class VersionEntityMock
             {
                 Id = 4,
                 CreatedTimestamp = DateTime.Now.AddMinutes(-7),
-                Version = "1.3.0b1",
+                Version = "1.3.0-b1",
                 Major = 1,
                 Minor = 3,
                 Patch = 0,

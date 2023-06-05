@@ -32,7 +32,7 @@ public class VersionNameControllerTests : TestBase
         
         Assert.That(result1.ToString(), Is.EqualTo("2.0.0"));
         
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "2.0.0b1");
+        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "2.0.0-b1");
         await _versionFileDatabaseSeeder.CreateVersionFile(version2);
         
         var result2 = await IntegrationTestHelper.TestClientRequest
@@ -58,7 +58,7 @@ public class VersionNameControllerTests : TestBase
         
         Assert.That(result1.ToString(), Is.EqualTo("1.1.0"));
 
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.2.0b1");
+        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.2.0-b1");
         await _versionFileDatabaseSeeder.CreateVersionFile(version2);
         
         var result2 = await IntegrationTestHelper.TestClientRequest
@@ -98,7 +98,7 @@ public class VersionNameControllerTests : TestBase
             .AppendPathSegment("beta")
             .GetJsonAsync<Version>();
         
-        Assert.That(result1.ToString(), Is.EqualTo("2.0.0b1"));
+        Assert.That(result1.ToString(), Is.EqualTo("2.0.0-b1"));
         
         var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = result1.ToString());
         await _versionFileDatabaseSeeder.CreateVersionFile(version2);
@@ -110,7 +110,7 @@ public class VersionNameControllerTests : TestBase
             .AppendPathSegment("beta")
             .GetJsonAsync<Version>();
         
-        Assert.That(result2.ToString(), Is.EqualTo("2.0.0b2"));
+        Assert.That(result2.ToString(), Is.EqualTo("2.0.0-b2"));
     }
 
     [Test]
@@ -126,7 +126,7 @@ public class VersionNameControllerTests : TestBase
             .AppendPathSegment("beta")
             .GetJsonAsync<Version>();
         
-        Assert.That(result1.ToString(), Is.EqualTo("1.1.0b1"));
+        Assert.That(result1.ToString(), Is.EqualTo("1.1.0-b1"));
         
         var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = result1.ToString());
         await _versionFileDatabaseSeeder.CreateVersionFile(version2);
@@ -138,6 +138,6 @@ public class VersionNameControllerTests : TestBase
             .AppendPathSegment("beta")
             .GetJsonAsync<Version>();
         
-        Assert.That(result2.ToString(), Is.EqualTo("1.1.0b2"));
+        Assert.That(result2.ToString(), Is.EqualTo("1.1.0-b2"));
     }
 }

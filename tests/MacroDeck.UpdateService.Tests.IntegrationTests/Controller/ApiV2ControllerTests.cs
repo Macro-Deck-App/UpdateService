@@ -52,7 +52,7 @@ public class ApiV2ControllerTests : TestBase
         var version2 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.1.0");
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
             entity.IsBetaVersion = true;
         });
 
@@ -80,7 +80,7 @@ public class ApiV2ControllerTests : TestBase
         var version2 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.1.0");
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
             entity.IsBetaVersion = true;
         });
 
@@ -110,7 +110,7 @@ public class ApiV2ControllerTests : TestBase
         var version2 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.1.0");
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
             entity.IsBetaVersion = true;
         });
         var version4 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.2.0");
@@ -188,7 +188,7 @@ public class ApiV2ControllerTests : TestBase
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
             entity.IsBetaVersion = true;
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
         });
         
         await _versionFileDatabaseSeeder.CreateVersionFile(version1, entity => entity.PlatformIdentifier = platform);
@@ -216,7 +216,7 @@ public class ApiV2ControllerTests : TestBase
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
             entity.IsBetaVersion = true;
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
         });
         
         await _versionFileDatabaseSeeder.CreateVersionFile(version1, entity => entity.PlatformIdentifier = platform);
@@ -244,7 +244,7 @@ public class ApiV2ControllerTests : TestBase
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
             entity.IsBetaVersion = true;
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
         });
         var version4 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.2.0");
         
@@ -275,7 +275,7 @@ public class ApiV2ControllerTests : TestBase
         var version3 = await _versionDatabaseSeeder.CreateVersion(entity =>
         {
             entity.IsBetaVersion = true;
-            entity.Version = "1.2.0b1";
+            entity.Version = "1.2.0-b1";
         });
         var version4 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.2.0");
         var version5 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.3.0");

@@ -1,3 +1,4 @@
+using AutoMapper;
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
 using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
 using MacroDeck.UpdateService.Core.DataTypes;
@@ -11,10 +12,12 @@ namespace MacroDeck.UpdateService.Core.Managers;
 public class VersionManager : IVersionManager
 {
     private readonly IVersionRepository _versionRepository;
+    private readonly IMapper _mapper;
 
-    public VersionManager(IVersionRepository versionRepository)
+    public VersionManager(IVersionRepository versionRepository, IMapper mapper)
     {
         _versionRepository = versionRepository;
+        _mapper = mapper;
     }
 
     public async ValueTask<Version> GetNextMajorVersion()
@@ -88,14 +91,18 @@ public class VersionManager : IVersionManager
 
     public async ValueTask<VersionInfo> GetLatestVersion(PlatformIdentifier platformIdentifier, bool includePreviewVersions)
     {
-        return await _versionRepository.GetLatestVersion(platformIdentifier, includePreviewVersions)
+        var versionEntity = await _versionRepository.GetLatestVersion(platformIdentifier, includePreviewVersions)
                ?? throw new NoVersionFoundException();
+
+        return _mapper.Map<VersionInfo>(versionEntity);
     }
 
     public async ValueTask<VersionInfo> GetVersion(string version)
     {
-        return await _versionRepository.GetVersionInfo(version)
+        var versionEntity = await _versionRepository.GetVersionInfo(version)
                ?? throw new VersionDoesNotExistException();
+
+        return _mapper.Map<VersionInfo>(versionEntity);
     }
 
     public async ValueTask<VersionEntity> GetOrCreateVersion(string version)
@@ -135,10 +142,11 @@ public class VersionManager : IVersionManager
             };
         }
 
+        var versionInfo = _mapper.Map<VersionInfo>(newerVersion);
         return new CheckResult
         {
             NewerVersionAvailable = true,
-            Version = newerVersion.Version
+            Version = versionInfo
         };
     }
 

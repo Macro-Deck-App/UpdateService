@@ -1,98 +1,63 @@
-# MacroDeck Update Service API V2 Documentation
+# Macro Deck Update Service API V2 Version Controller Documentation
 
-The `ApiV2Controller` in the MacroDeck Update Service provides methods for managing and interacting with software versions. This controller is part of the API V2 and includes methods for retrieving the next major, minor, or patch version, validating version names, checking for updates, and getting the latest versions.
+The `ApiV2VersionController` in the Macro Deck Update Service provides methods for managing and interacting with Macro Deck versions. This controller is part of the API V2 and includes methods for checking for updates, retrieving the latest version, getting information about a specific version, and getting the file size of a specific version for a specific platform.
 
 ## Endpoints
 
-### GET /v2/next/major
+### GET /v2versions/check/{installedVersion}/{platform}
 
-This endpoint returns the next major version of the software.
-
-- **Parameters**: None.
-- **Returns**: An object representing the `Version`.
-
-### GET /v2/next/minor
-
-This endpoint returns the next minor version of the software.
-
-- **Parameters**: None.
-- **Returns**: An object representing the `Version`.
-
-### GET /v2/next/patch
-
-This endpoint returns the next patch version of the software.
-
-- **Parameters**: None.
-- **Returns**: An object representing the `Version`.
-
-### GET /v2/next/major/beta
-
-This endpoint returns the next major beta version of the software.
-
-- **Parameters**: None.
-- **Returns**: An object representing the `Version`.
-
-### GET /v2/next/minor/beta
-
-This endpoint returns the next minor beta version of the software.
-
-- **Parameters**: None.
-- **Returns**: An object representing the `Version`.
-
-### GET /v2/validate/versionname/{version}
-
-This endpoint validates a version name.
+This endpoint checks for newer versions of Macro Deck based on the currently installed version and the platform.
 
 - **Parameters**:
-    - `version`: A string representation of the version to be validated.
-- **Returns**: A boolean indicating whether the version name is valid or not.
-
-### GET /v2/check/{installedVersion}/{platform}
-
-This endpoint checks for newer versions of the software based on the currently installed version and the platform.
-
-- **Parameters**:
-    - `installedVersion`: A string representation of the installed version.
-    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
-    - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the check.
+  - `apiVersion`: The API version.
+  - `installedVersion`: A string representation of the installed version.
+  - `platform`: A `PlatformIdentifier` enum representing the Macro Deck's platform.
+  - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the check.
 - **Returns**: An object representing the `ApiV2CheckResult`.
 
-### GET /v2/latest/{platform}
+### GET /v2/versions/latest/{platform}
 
-This endpoint returns the latest version of the software for a specific platform.
+This endpoint returns the latest version of Macro Deck for a specific platform.
 
 - **Parameters**:
-    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
-    - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the response.
+  - `apiVersion`: The API version.
+  - `platform`: A `PlatformIdentifier` enum representing the Macro Deck's platform.
+  - `previewVersions` (optional, query): A boolean indicating whether to include preview versions in the response.
 - **Returns**: An object representing the `ApiV2VersionInfo`.
 
-### GET /v2/{version}
+### GET /v2/versions/{version}
 
-This endpoint returns information about a specific version.
+This endpoint returns information about a specific version of Macro Deck.
 
 - **Parameters**:
-    - `version`: A string representation of the version.
+  - `apiVersion`: The API version.
+  - `version`: A string representation of the version.
 - **Returns**: An object representing the `ApiV2VersionInfo`.
 
-### GET /v2/{version}/fileSize/{platform}
+### GET /v2/versions/{version}/fileSize/{platform}
 
-This endpoint returns the file size of a specific version for a specific platform.
+This endpoint returns the file size of a specific version of Macro Deck for a specific platform.
 
 - **Parameters**:
-    - `version`: A string representation of the version.
-    - `platform`: A `PlatformIdentifier` enum representing the software's platform.
+  - `apiVersion`: The API version.
+  - `version`: A string representation of the version.
+  - `platform`: A `PlatformIdentifier` enum representing the Macro Deck's platform.
 - **Returns**: The file size as a double.
 
 ## Data Types
 
-### `Version`
-
-The `Version` struct represents a version of the software and includes fields for the major, minor, and patch versions, as well as an optional beta number. This struct also provides methods for parsing and validating version strings.
-
 ### `ApiV2VersionInfo`
 
-The `ApiV2VersionInfo` class provides information about a software version, including its version string and a dictionary of platforms and their respective version strings.
+The `ApiV2VersionInfo` class provides information about a Macro Deck version. This includes the version number and a dictionary of platform identifiers each mapped to their respective download link.
+
+- **Properties**:
+  - `Version`: A string representation of the Macro Deck version.
+  - `Platforms`: A dictionary mapping `PlatformIdentifier` enum values to their respective download links for the specified version.
 
 ### `ApiV2CheckResult`
 
-The `ApiV2CheckResult` class provides the result of a check for
+The `ApiV2CheckResult` class provides the result of a version check for Macro Deck. It includes a boolean indicating if a newer version is available and an `ApiV2VersionInfo` object providing details about the available version, if applicable.
+
+- **Properties**:
+  - `NewerVersionAvailable`: A boolean indicating whether a newer version of Macro Deck is available.
+  - `Version`: An instance of `ApiV2VersionInfo` providing information about the newer version if one is available; null otherwise.

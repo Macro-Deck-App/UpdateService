@@ -1,4 +1,5 @@
 using MacroDeck.UpdateService.Core.Helper;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 
 namespace MacroDeck.UpdateService.StartupConfig;
@@ -42,6 +43,16 @@ public static class SwaggerConfiguration
                     new List<string>()
                 }
             });
+            
+            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+            foreach (var description in provider.ApiVersionDescriptions)
+            {
+                options.SwaggerDoc(description.GroupName, new OpenApiInfo
+                {
+                    Title = $"Macro Deck UpdateService {description.ApiVersion}",
+                    Version = description.ApiVersion.ToString()
+                });
+            }
         });
     }
 
@@ -53,6 +64,16 @@ public static class SwaggerConfiguration
         }
         
         app.UseSwagger();
-        app.UseSwaggerUI();
+        
+        var apiVersionDescriptionProvider =
+            app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+        
+        app.UseSwaggerUI(options =>
+        {
+            foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
+            {
+                options.SwaggerEndpoint($"{description.GroupName}/swagger.json", description.GroupName);
+            }
+        });
     }
 }

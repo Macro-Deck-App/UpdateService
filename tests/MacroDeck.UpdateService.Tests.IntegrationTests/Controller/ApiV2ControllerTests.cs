@@ -5,7 +5,6 @@ using MacroDeck.UpdateService.Core.Helper;
 using MacroDeck.UpdateService.Tests.IntegrationTests.DataAccess.DatabaseSeeder;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Tests.IntegrationTests.Controller;
 
@@ -34,14 +33,14 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version2, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
-        Assert.That(result.Version, Is.EqualTo(version2.Version));
+        Assert.That(result.Version?.Version, Is.EqualTo(version2.Version));
     }
     
     [Test]
@@ -62,14 +61,14 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version3, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
-        Assert.That(result.Version, Is.EqualTo(version2.Version));
+        Assert.That(result.Version?.Version, Is.EqualTo(version2.Version));
     }
 
     [Test]
@@ -90,7 +89,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version3, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
@@ -98,7 +97,7 @@ public class ApiV2ControllerTests : TestBase
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
-        Assert.That(result.Version, Is.EqualTo(version3.Version));
+        Assert.That(result.Version?.Version, Is.EqualTo(version3.Version));
     }
     
     
@@ -122,7 +121,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version4, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
@@ -130,7 +129,7 @@ public class ApiV2ControllerTests : TestBase
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
-        Assert.That(result.Version, Is.EqualTo(version4.Version));
+        Assert.That(result.Version?.Version, Is.EqualTo(version4.Version));
     }
     
     [Test]
@@ -148,14 +147,14 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version3, entity => entity.PlatformIdentifier = platform2);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform1.ToString())
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
-        Assert.That(result.Version, Is.EqualTo(version2.Version));
+        Assert.That(result.Version?.Version, Is.EqualTo(version2.Version));
     }
 
     [Test]
@@ -170,7 +169,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version2, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
             .GetJsonAsync<ApiV2VersionInfo>();
@@ -197,7 +196,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version3, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
             .SetQueryParam("previewVersions", true)
@@ -225,7 +224,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version3, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
             .SetQueryParam("previewVersions", false)
@@ -255,7 +254,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version4, entity => entity.PlatformIdentifier = platform);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
             .SetQueryParam("previewVersions", true)
@@ -294,7 +293,7 @@ public class ApiV2ControllerTests : TestBase
         await _versionFileDatabaseSeeder.CreateVersionFile(version5, entity => entity.PlatformIdentifier = platform2);
 
         var result = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform2.ToString())
             .SetQueryParam("previewVersions", true)
@@ -310,7 +309,7 @@ public class ApiV2ControllerTests : TestBase
     {
         const string fileName = "testfile";
         const PlatformIdentifier platform = PlatformIdentifier.WinX64;
-        
+
         var version1 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.0.0");
         var version2 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.1.0");
 
@@ -320,146 +319,23 @@ public class ApiV2ControllerTests : TestBase
             entity.PlatformIdentifier = platform;
             entity.FileName = fileName;
         });
-        
+
         var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment(version1.Version)
             .GetJsonAsync<ApiV2VersionInfo>();
-        
+
         Assert.That(result1.Version, Is.EqualTo(version1.Version));
         Assert.That(result1.Platforms, Contains.Key(platform));
         Assert.That(result1.Platforms[platform],
             Is.EqualTo(FileProviderUrlBuilder.GetUrl(FileProvider.GitHub, version1.Version, fileName)));
-        
+
         var result2 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
+            .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment(version2.Version)
             .GetJsonAsync<ApiV2VersionInfo>();
-        
+
         Assert.That(result2.Version, Is.EqualTo(version2.Version));
         Assert.That(result2.Platforms, Is.Empty);
-    }
-
-    [Test]
-    public async Task ApiV2Controller_GetNextMajorVersion_Returns_Correct_Version()
-    {
-        var version1 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.0.0");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version1);
-        
-        var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("major")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result1.ToString(), Is.EqualTo("2.0.0"));
-        
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "2.0.0b1");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version2);
-        
-        var result2 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("major")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result2.ToString(), Is.EqualTo("2.0.0"));
-    }
-    
-    [Test]
-    public async Task ApiV2Controller_GetNextMinorVersion_Returns_Correct_Version()
-    {
-        var version = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.0.0");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version);
-        
-        var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("minor")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result1.ToString(), Is.EqualTo("1.1.0"));
-
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.2.0b1");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version2);
-        
-        var result2 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("minor")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result2.ToString(), Is.EqualTo("1.2.0"));
-    }
-    
-    [Test]
-    public async Task ApiV2Controller_GetNextPatchVersion_Returns_Correct_Version()
-    {
-        var version1 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.0.0");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version1);
-        
-        var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("patch")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result1.ToString(), Is.EqualTo("1.0.1"));
-    }
-    
-    [Test]
-    public async Task ApiV2Controller_GetMajorBetaPatchVersion_Returns_Correct_Version()
-    {
-        var version1 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.0.0");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version1);
-        
-        var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("major")
-            .AppendPathSegment("beta")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result1.ToString(), Is.EqualTo("2.0.0b1"));
-        
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = result1.ToString());
-        await _versionFileDatabaseSeeder.CreateVersionFile(version2);
-        
-        var result2 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("major")
-            .AppendPathSegment("beta")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result2.ToString(), Is.EqualTo("2.0.0b2"));
-    }
-
-    [Test]
-    public async Task ApiV2Controller_GetMinorBetaPatchVersion_Returns_Correct_Version()
-    {
-        var version1 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = "1.0.0");
-        await _versionFileDatabaseSeeder.CreateVersionFile(version1);
-        
-        var result1 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("minor")
-            .AppendPathSegment("beta")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result1.ToString(), Is.EqualTo("1.1.0b1"));
-        
-        var version2 = await _versionDatabaseSeeder.CreateVersion(update: entity => entity.Version = result1.ToString());
-        await _versionFileDatabaseSeeder.CreateVersionFile(version2);
-        
-        var result2 = await IntegrationTestHelper.TestClientRequest
-            .AppendPathSegment(IntegrationTestConstants.ApiV2Base)
-            .AppendPathSegment("next")
-            .AppendPathSegment("minor")
-            .AppendPathSegment("beta")
-            .GetJsonAsync<Version>();
-        
-        Assert.That(result2.ToString(), Is.EqualTo("1.1.0b2"));
     }
 }

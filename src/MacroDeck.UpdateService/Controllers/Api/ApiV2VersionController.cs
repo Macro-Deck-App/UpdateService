@@ -4,18 +4,18 @@ using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ManagerInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
 
 namespace MacroDeck.UpdateService.Controllers.Api;
 
-[Route("v2")]
-public class ApiV2Controller : ControllerBase
+[Route("v{apiVersion:apiVersion}/versions")]
+[ApiVersion("2.0")]
+public class ApiV2VersionController : UpdateServiceControllerBase
 {
     private readonly IVersionManager _versionManager;
     private readonly IVersionFileManager _versionFileManager;
     private readonly IMapper _mapper;
 
-    public ApiV2Controller(
+    public ApiV2VersionController(
         IVersionManager versionManager,
         IVersionFileManager versionFileManager,
         IMapper mapper)
@@ -24,48 +24,6 @@ public class ApiV2Controller : ControllerBase
         _versionFileManager = versionFileManager;
         _mapper = mapper;
     }
-
-    [HttpGet("next/major")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<Version>> GetNextMajorVersion()
-    {
-        return await _versionManager.GetNextMajorVersion();
-    }
-    
-    [HttpGet("next/minor")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<Version>> GetNextMinorVersion()
-    {
-        return await _versionManager.GetNextMinorVersion();
-    }
-    
-    [HttpGet("next/patch")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<Version>> GetNextPatchVersion()
-    {
-        return await _versionManager.GetNextPatchVersion();
-    }
-    
-    [HttpGet("next/major/beta")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<Version>> GetNextMajorBetaVersion()
-    {
-        return await _versionManager.GetNextMajorBetaVersion();
-    }
-    
-    [HttpGet("next/minor/beta")]
-    [AllowAnonymous]
-    public async ValueTask<ActionResult<Version>> GetNextMinorBetaVersion()
-    {
-        return await _versionManager.GetNextMinorBetaVersion();
-    }
-
-    [HttpGet("validate/versionname/{version}")]
-    [AllowAnonymous]
-    public ActionResult<bool> ValidateVersionName(string version)
-    {
-        return Version.TryParse(version, out _);
-    } 
 
     [HttpGet("check/{installedVersion}/{platform}")]
     [AllowAnonymous]

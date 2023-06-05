@@ -1,7 +1,5 @@
-using AutoMapper;
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
 using MacroDeck.UpdateService.Core.DataAccess.RepositoryInterfaces;
-using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Version = MacroDeck.UpdateService.Core.DataTypes.Version;
@@ -10,17 +8,14 @@ namespace MacroDeck.UpdateService.Core.DataAccess.Repositories;
 
 public class VersionRepository : BaseRepository<VersionEntity>, IVersionRepository
 {
-    private readonly IMapper _mapper;
-
-    public VersionRepository(UpdateServiceContext context, IMapper mapper)
+    public VersionRepository(UpdateServiceContext context)
         : base(context)
     {
-        _mapper = mapper;
     }
 
-    public async ValueTask<VersionInfo?> GetLatestVersion(PlatformIdentifier? platformIdentifier, bool includePreviewVersions)
+    public async ValueTask<VersionEntity?> GetLatestVersion(PlatformIdentifier? platformIdentifier, bool includePreviewVersions)
     {
-        var versionEntity = await Context.Set<VersionEntity>().AsNoTracking()
+        return await Context.Set<VersionEntity>().AsNoTracking()
             .Where(x => x.Files.Any(y => platformIdentifier == null || y.PlatformIdentifier == platformIdentifier))
             .Where(x => includePreviewVersions && x.IsBetaVersion || !x.IsBetaVersion)
             .OrderByDescending(x => x.Major)
@@ -30,16 +25,12 @@ public class VersionRepository : BaseRepository<VersionEntity>, IVersionReposito
             .ThenByDescending(x => x.PreReleaseNo ?? 0)
             .Include(x => x.Files)
             .FirstOrDefaultAsync();
-
-        return _mapper.Map<VersionInfo>(versionEntity);
     }
 
-    public async ValueTask<VersionInfo?> GetVersionInfo(string version)
+    public async ValueTask<VersionEntity?> GetVersionInfo(string version)
     {
-        var versionEntity = await GetVersionBaseQuery(version)
+        return await GetVersionBaseQuery(version)
             .SingleOrDefaultAsync();
-        
-        return _mapper.Map<VersionInfo>(versionEntity);
     }
     
     public async ValueTask<VersionEntity?> GetVersion(string version)
@@ -68,6 +59,7 @@ public class VersionRepository : BaseRepository<VersionEntity>, IVersionReposito
             .ThenByDescending(x => x.Patch)
             .ThenBy(x => x.IsBetaVersion)
             .ThenByDescending(x => x.PreReleaseNo ?? 0)
+            .Include(x => x.Files)
             .FirstOrDefaultAsync();
     }
 

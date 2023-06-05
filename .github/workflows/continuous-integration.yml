@@ -1,4 +1,4 @@
-name: Continuous integration testing
+name: CI
 
 on:
   workflow_call:
@@ -7,7 +7,8 @@ on:
       - '**'
   push:
     branches:
-      - '**'
+      - 'main'
+      - 'develop'
 
 jobs:
   base_image_build:

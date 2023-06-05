@@ -22,12 +22,12 @@ public class VersionFileEntityConfig : BaseEntityConfig<VersionFileEntity>
             .HasColumnName("platform_identifier")
             .IsRequired();
 
-        builder.Property(x => x.OriginalFileName)
-            .HasColumnName("file_name")
+        builder.Property(x => x.FileProvider)
+            .HasColumnName("file_provider")
             .IsRequired();
         
-        builder.Property(x => x.SavedFileName)
-            .HasColumnName("saved_name")
+        builder.Property(x => x.FileName)
+            .HasColumnName("file_name")
             .IsRequired();
         
         builder.Property(x => x.FileHash)
@@ -41,10 +41,5 @@ public class VersionFileEntityConfig : BaseEntityConfig<VersionFileEntity>
         builder.Property(x => x.VersionId)
             .HasColumnName("version_ref")
             .IsRequired();
-
-        builder.HasMany(x => x.FileDownloads)
-            .WithOne(x => x.VersionFile)
-            .HasForeignKey(x => x.VersionFileId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

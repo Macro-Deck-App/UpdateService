@@ -1,5 +1,6 @@
 using Flurl.Http;
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
+using MacroDeck.UpdateService.Core.DataTypes;
 using MacroDeck.UpdateService.Core.Enums;
 using MacroDeck.UpdateService.Core.ErrorHandling;
 using MacroDeck.UpdateService.Tests.IntegrationTests.DataAccess;
@@ -34,15 +35,20 @@ public class FileControllerTests : TestBase
     [Test]
     public async Task FileController_Upload_Valid_File_Success()
     {
-        var testFile = Path.Combine("TestFiles", "testfile-win.exe");
-        Assert.True(File.Exists(testFile));
-        
+        var createFileRequest = new CreateFileRequest
+        {
+            FileName = "testfile-win.exe",
+            FileProvider = FileProvider.GitHub,
+            FileHash = SharedTestConstants.TestFileWinSha256,
+            FileSize = 100
+        };
+
         var result = await IntegrationTestHelper.TestClientRequest
             .AppendPathSegment(IntegrationTestConstants.FilesBase)
             .AppendPathSegment("1.0.0")
             .AppendPathSegment(PlatformIdentifier.WinX64.ToString())
             .WithAdminToken()
-            .PostMultipartAsync(x => x.AddFile("file", testFile));
+            .PostJsonAsync(createFileRequest);
 
         var uploadRequestResponse = await result.GetStringAsync();
         
@@ -60,14 +66,19 @@ public class FileControllerTests : TestBase
     [Test]
     public async Task FileController_Upload_Existing_File_Fails()
     {
-        var testFile = Path.Combine("TestFiles", "testfile-win.exe");
-        Assert.True(File.Exists(testFile));
-
         var version = await _versionDatabaseSeeder.CreateVersion();
         var versionFile = await _versionFileDatabaseSeeder.CreateVersionFile(version, update: entity =>
         {
-            entity.OriginalFileName = Path.GetFileName(testFile);
+            entity.FileName = "testfile-win.exe";
         });
+        
+        var createFileRequest = new CreateFileRequest
+        {
+            FileName = "testfile-win.exe",
+            FileProvider = FileProvider.GitHub,
+            FileHash = SharedTestConstants.TestFileWinSha256,
+            FileSize = 100
+        };
 
         var result = await IntegrationTestHelper.TestClientRequest
             .AppendPathSegment(IntegrationTestConstants.FilesBase)
@@ -75,7 +86,7 @@ public class FileControllerTests : TestBase
             .AppendPathSegment(versionFile.PlatformIdentifier.ToString())
             .WithAdminToken()
             .AllowAnyHttpStatus()
-            .PostMultipartAsync(x => x.AddFile("file", testFile));
+            .PostJsonAsync(createFileRequest);
         
         Assert.That(result.StatusCode, Is.EqualTo(StatusCodes.Status409Conflict));
         Assert.That(_versionFileTestRepository.AsQueryable().Count(), Is.EqualTo(1));

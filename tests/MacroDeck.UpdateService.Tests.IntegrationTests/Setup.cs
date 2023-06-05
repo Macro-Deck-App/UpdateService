@@ -43,7 +43,6 @@ public class Setup
         services.AddScoped(typeof(ITestRepository<>), typeof(TestRepository<>));
         services.AddScoped<VersionDatabaseSeeder>();
         services.AddScoped<VersionFileDatabaseSeeder>();
-        services.AddScoped<FileDownloadDatabaseSeeder>();
     }
 
     [OneTimeTearDown]

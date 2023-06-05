@@ -1,4 +1,3 @@
-using AutoMapper;
 using MacroDeck.UpdateService.Core.DataAccess.Entities;
 using MacroDeck.UpdateService.Core.DataAccess.Repositories;
 using MacroDeck.UpdateService.Core.Enums;
@@ -11,22 +10,13 @@ namespace MacroDeck.UpdateService.UnitTests.Repositories;
 [TestFixture]
 public class VersionRepositoryTests : TestBase
 {
-    private IMapper _mapper;
-
-    [SetUp]
-    public void Setup()
-    {
-        var config = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Startup)));
-        _mapper = config.CreateMapper();
-    }
-
     [Test]
     public async Task GetLatestVersion_NoPreviewVersion_ReturnsCorrectVersion()
     {
         var versionEntities = VersionEntityMock.GetVersionEntities();
         await SeedDatabase(versionEntities);
 
-        var versionRepository = new VersionRepository(UpdateServiceContext, _mapper);
+        var versionRepository = new VersionRepository(UpdateServiceContext);
         
         var latestVersionFromRepository = await versionRepository.GetLatestVersion(PlatformIdentifier.WinX64, false);
         
@@ -34,12 +24,6 @@ public class VersionRepositoryTests : TestBase
 
         var versionEntityFromDatabase =
             versionEntities.SingleOrDefault(x => x.Version == latestVersionFromRepository.Version);
-        
-        Assert.That(latestVersionFromRepository.VersionState, Is.EqualTo(VersionState.Published));
-        Assert.That(latestVersionFromRepository.IsPreviewVersion, Is.EqualTo(false));
-        Assert.That(latestVersionFromRepository.Downloads,
-            Is.EqualTo(versionEntityFromDatabase?.Files.SelectMany(x => x.FileDownloads)
-                .LongCount(x => x.DownloadReason == DownloadReason.FirstDownload)));
         Assert.That(versionEntityFromDatabase?.Files.Any(x => x.PlatformIdentifier == PlatformIdentifier.WinX64), Is.True);
     }
     
@@ -49,7 +33,7 @@ public class VersionRepositoryTests : TestBase
         var versionEntities = VersionEntityMock.GetVersionEntities();
         await SeedDatabase(versionEntities);
 
-        var versionRepository = new VersionRepository(UpdateServiceContext, _mapper);
+        var versionRepository = new VersionRepository(UpdateServiceContext);
         
         var latestVersionFromRepository = await versionRepository.GetLatestVersion(PlatformIdentifier.WinX64, true);
         
@@ -58,11 +42,6 @@ public class VersionRepositoryTests : TestBase
         var versionEntityFromDatabase =
             versionEntities.SingleOrDefault(x => x.Version == latestVersionFromRepository.Version);
         
-        Assert.That(latestVersionFromRepository.VersionState, Is.EqualTo(VersionState.Published));
-        Assert.That(latestVersionFromRepository.IsPreviewVersion, Is.EqualTo(true));
-        Assert.That(latestVersionFromRepository.Downloads,
-            Is.EqualTo(versionEntityFromDatabase?.Files.SelectMany(x => x.FileDownloads)
-                .LongCount(x => x.DownloadReason == DownloadReason.FirstDownload)));
         Assert.That(versionEntityFromDatabase?.Files.Any(x => x.PlatformIdentifier == PlatformIdentifier.WinX64), Is.True);
     }
 
@@ -72,15 +51,15 @@ public class VersionRepositoryTests : TestBase
         var versionEntities = VersionEntityMock.GetVersionEntities();
         await SeedDatabase(versionEntities);
 
-        var versionRepository = new VersionRepository(UpdateServiceContext, _mapper);
+        var versionRepository = new VersionRepository(UpdateServiceContext);
 
         var currentVersion = versionEntities.OrderBy(x => x.Id)
-            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreviewNo))
+            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreReleaseNo))
             .FirstOrDefault();
 
         var newerVersion = await versionRepository.GetNewerVersion(currentVersion, PlatformIdentifier.WinX64, false);
         var latestVersion = versionEntities
-            .Where(x => x.IsPreviewVersion == false)
+            .Where(x => x.IsBetaVersion == false)
             .Where(x => x.Files.Any(f => f.PlatformIdentifier == PlatformIdentifier.WinX64))
             .MaxBy(x => x.Id);
         Assert.NotNull(newerVersion);
@@ -93,10 +72,10 @@ public class VersionRepositoryTests : TestBase
         var versionEntities = VersionEntityMock.GetVersionEntities();
         await SeedDatabase(versionEntities);
 
-        var versionRepository = new VersionRepository(UpdateServiceContext, _mapper);
+        var versionRepository = new VersionRepository(UpdateServiceContext);
 
         var currentVersion = versionEntities.OrderBy(x => x.Id)
-            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreviewNo))
+            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreReleaseNo))
             .FirstOrDefault();
 
         var newerVersion = await versionRepository.GetNewerVersion(currentVersion, PlatformIdentifier.WinX64, true);
@@ -113,12 +92,12 @@ public class VersionRepositoryTests : TestBase
         var versionEntities = VersionEntityMock.GetVersionEntities();
         await SeedDatabase(versionEntities);
 
-        var versionRepository = new VersionRepository(UpdateServiceContext, _mapper);
+        var versionRepository = new VersionRepository(UpdateServiceContext);
         
         var latestVersion = versionEntities
             .Where(x => x.Files.Any(f => f.PlatformIdentifier == PlatformIdentifier.WinX64))
             .OrderByDescending(x => x.Id)
-            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreviewNo))
+            .Select(x => new Version(x.Major, x.Minor, x.Patch, x.PreReleaseNo))
             .FirstOrDefault();
 
         var newerVersion = await versionRepository.GetNewerVersion(latestVersion, PlatformIdentifier.WinX64, true);

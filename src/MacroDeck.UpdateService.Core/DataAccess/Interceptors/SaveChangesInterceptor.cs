@@ -37,8 +37,8 @@ public class SaveChangesInterceptor : ISaveChangesInterceptor
                 versionEntity.Major = versionStruct.Major;
                 versionEntity.Minor = versionStruct.Minor;
                 versionEntity.Patch = versionStruct.Patch;
-                versionEntity.PreviewNo = versionStruct.PreviewNo;
-                versionEntity.IsPreviewVersion = versionStruct.IsPreviewVersion;
+                versionEntity.PreReleaseNo = versionStruct.BetaNo;
+                versionEntity.IsBetaVersion = versionStruct.IsBetaVersion;
             }
         }
 

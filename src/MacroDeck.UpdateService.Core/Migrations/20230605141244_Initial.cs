@@ -26,9 +26,8 @@ namespace MacroDeck.UpdateService.Core.Migrations
                     version_major = table.Column<int>(type: "integer", nullable: false),
                     version_minor = table.Column<int>(type: "integer", nullable: false),
                     version_patch = table.Column<int>(type: "integer", nullable: false),
-                    version_preview_no = table.Column<int>(type: "integer", nullable: true),
-                    is_preview_version = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    version_state = table.Column<int>(type: "integer", nullable: false),
+                    version_pre_release_no = table.Column<int>(type: "integer", nullable: true),
+                    is_pre_release_version = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     created_timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
@@ -43,10 +42,11 @@ namespace MacroDeck.UpdateService.Core.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    file_provider = table.Column<int>(type: "integer", nullable: false),
                     platform_identifier = table.Column<int>(type: "integer", nullable: false),
-                    saved_name = table.Column<string>(type: "text", nullable: false),
                     file_name = table.Column<string>(type: "text", nullable: false),
                     hash = table.Column<string>(type: "text", nullable: false),
+                    file_size = table.Column<long>(type: "bigint", nullable: false),
                     version_ref = table.Column<int>(type: "integer", nullable: false),
                     created_timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -62,52 +62,11 @@ namespace MacroDeck.UpdateService.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "file_downloads",
-                schema: "updateservice",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    download_reason = table.Column<int>(type: "integer", nullable: false),
-                    version_file_ref = table.Column<int>(type: "integer", nullable: false),
-                    created_timestamp = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_file_downloads", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_file_downloads_version_files_version_file_ref",
-                        column: x => x.version_file_ref,
-                        principalSchema: "updateservice",
-                        principalTable: "version_files",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_file_downloads_download_reason",
-                schema: "updateservice",
-                table: "file_downloads",
-                column: "download_reason");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_file_downloads_version_file_ref",
-                schema: "updateservice",
-                table: "file_downloads",
-                column: "version_file_ref");
-
             migrationBuilder.CreateIndex(
                 name: "IX_version_files_version_ref",
                 schema: "updateservice",
                 table: "version_files",
                 column: "version_ref");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_versions_version_state",
-                schema: "updateservice",
-                table: "versions",
-                column: "version_state");
 
             migrationBuilder.CreateIndex(
                 name: "IX_versions_version_string",
@@ -120,10 +79,6 @@ namespace MacroDeck.UpdateService.Core.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "file_downloads",
-                schema: "updateservice");
-
             migrationBuilder.DropTable(
                 name: "version_files",
                 schema: "updateservice");

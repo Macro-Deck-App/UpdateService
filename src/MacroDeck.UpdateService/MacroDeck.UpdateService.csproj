@@ -7,6 +7,8 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
           <PrivateAssets>all</PrivateAssets>

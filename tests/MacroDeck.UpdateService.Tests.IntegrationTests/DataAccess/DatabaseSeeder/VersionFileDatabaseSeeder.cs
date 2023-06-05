@@ -20,9 +20,10 @@ public class VersionFileDatabaseSeeder
         var versionFileEntity = new VersionFileEntity
         {
             PlatformIdentifier = PlatformIdentifier.WinX64,
-            SavedFileName = Guid.NewGuid().ToString(),
-            OriginalFileName = "testfile-win.exe",
+            FileName = "testfile-win.exe",
+            FileProvider = FileProvider.GitHub,
             FileHash = SharedTestConstants.TestFileWinSha256,
+            FileSize = 100,
             VersionId = version.Id
         };
         

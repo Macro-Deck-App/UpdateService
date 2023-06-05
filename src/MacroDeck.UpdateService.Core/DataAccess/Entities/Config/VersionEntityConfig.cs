@@ -19,8 +19,6 @@ public class VersionEntityConfig : BaseEntityConfig<VersionEntity>
         builder.HasIndex(x => x.Version)
             .IsUnique();
 
-        builder.HasIndex(x => x.VersionState);
-
         builder.Property(x => x.Version)
             .HasColumnName("version_string")
             .IsRequired();
@@ -37,16 +35,12 @@ public class VersionEntityConfig : BaseEntityConfig<VersionEntity>
             .HasColumnName("version_patch")
             .IsRequired();
 
-        builder.Property(x => x.PreviewNo)
-            .HasColumnName("version_preview_no");
+        builder.Property(x => x.PreReleaseNo)
+            .HasColumnName("version_pre_release_no");
 
-        builder.Property(x => x.IsPreviewVersion)
-            .HasColumnName("is_preview_version")
+        builder.Property(x => x.IsBetaVersion)
+            .HasColumnName("is_pre_release_version")
             .HasDefaultValue(false);
-
-        builder.Property(x => x.VersionState)
-            .HasColumnName("version_state")
-            .IsRequired();
 
         builder.HasMany(x => x.Files)
             .WithOne(x => x.Version)

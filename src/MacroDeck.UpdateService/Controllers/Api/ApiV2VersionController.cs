@@ -30,10 +30,10 @@ public class ApiV2VersionController : UpdateServiceControllerBase
     public async ValueTask<ActionResult<ApiV2CheckResult>> CheckForUpdates(
         string installedVersion,
         PlatformIdentifier platform,
-        [FromQuery] bool previewVersions = false)
+        [FromQuery] bool betaVersions = false)
     {
         var checkResult =
-            await _versionManager.CheckForNewerVersion(installedVersion, platform, previewVersions);
+            await _versionManager.CheckForNewerVersion(installedVersion, platform, betaVersions);
         return _mapper.Map<ApiV2CheckResult>(checkResult);
     }
 
@@ -41,9 +41,9 @@ public class ApiV2VersionController : UpdateServiceControllerBase
     [AllowAnonymous]
     public async ValueTask<ActionResult<ApiV2VersionInfo>> GetLatestVersion(
         PlatformIdentifier platform,
-        [FromQuery] bool previewVersions = false)
+        [FromQuery] bool betaVersions = false)
     {
-        var versionInfo = await _versionManager.GetLatestVersion(platform, previewVersions);
+        var versionInfo = await _versionManager.GetLatestVersion(platform, betaVersions);
         return _mapper.Map<ApiV2VersionInfo>(versionInfo);
     }
 

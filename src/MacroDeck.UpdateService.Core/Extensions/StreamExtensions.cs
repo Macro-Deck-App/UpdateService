@@ -26,5 +26,5 @@ public static class StreamExtensions
         
         stream.Position = 0;
         return BitConverter.ToString(sha256.Hash).Replace("-", "").ToLower();
-    } 
+    }
 }

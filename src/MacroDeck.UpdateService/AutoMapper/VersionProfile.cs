@@ -17,7 +17,12 @@ public class VersionProfile : Profile
                     Version = src.Version,
                     Platforms = src.Files.ToDictionary(
                         f => f.PlatformIdentifier, 
-                        f => FileProviderUrlBuilder.GetUrl(f.FileProvider, src.Version, f.FileName))
+                        f => new VersionFileInfo
+                        {
+                            DownloadUrl = FileProviderUrlBuilder.GetUrl(f.FileProvider, src.Version, f.FileName),
+                            FileHash = f.FileHash,
+                            FileSize = f.FileSize
+                        })
                 };
             });
 

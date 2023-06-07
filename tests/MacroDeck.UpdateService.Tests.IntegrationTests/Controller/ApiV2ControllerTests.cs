@@ -93,7 +93,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
-            .SetQueryParam("previewVersions", true)
+            .SetQueryParam("betaVersions", true)
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
@@ -125,7 +125,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment("check")
             .AppendPathSegment(version1.Version)
             .AppendPathSegment(platform.ToString())
-            .SetQueryParam("previewVersions", true)
+            .SetQueryParam("betaVersions", true)
             .GetJsonAsync<ApiV2CheckResult>();
         
         Assert.That(result.NewerVersionAvailable, Is.EqualTo(true));
@@ -199,7 +199,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
-            .SetQueryParam("previewVersions", true)
+            .SetQueryParam("betaVersions", true)
             .GetJsonAsync<ApiV2VersionInfo>();
         
         Assert.That(result.Version, Is.EqualTo(version3.Version));
@@ -227,7 +227,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
-            .SetQueryParam("previewVersions", false)
+            .SetQueryParam("betaVersions", false)
             .GetJsonAsync<ApiV2VersionInfo>();
         
         Assert.That(result.Version, Is.EqualTo(version2.Version));
@@ -257,7 +257,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform.ToString())
-            .SetQueryParam("previewVersions", true)
+            .SetQueryParam("betaVersions", true)
             .GetJsonAsync<ApiV2VersionInfo>();
         
         Assert.That(result.Version, Is.EqualTo(version4.Version));
@@ -296,7 +296,7 @@ public class ApiV2ControllerTests : TestBase
             .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)
             .AppendPathSegment("latest")
             .AppendPathSegment(platform2.ToString())
-            .SetQueryParam("previewVersions", true)
+            .SetQueryParam("betaVersions", true)
             .GetJsonAsync<ApiV2VersionInfo>();
         
         Assert.That(result.Version, Is.EqualTo(version5.Version));

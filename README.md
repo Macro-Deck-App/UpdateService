@@ -52,6 +52,7 @@ The `ApiV2VersionInfo` class provides information about a Macro Deck version. Th
 
 - **Properties**:
   - `Version`: A string representation of the Macro Deck version.
+  - `IsBeta`: A boolean which is true when it is a beta version.
   - `Platforms`: A dictionary mapping `PlatformIdentifier` enum values to their respective `ApiV2VersionFileInfo` objects for the specified version.
 
 ### `ApiV2VersionFileInfo`

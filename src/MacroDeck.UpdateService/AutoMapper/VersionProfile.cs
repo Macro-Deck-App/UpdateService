@@ -15,6 +15,7 @@ public class VersionProfile : Profile
                 return new VersionInfo
                 {
                     Version = src.Version,
+                    IsBeta = src.IsBetaVersion,
                     Platforms = src.Files.ToDictionary(
                         f => f.PlatformIdentifier, 
                         f => new VersionFileInfo

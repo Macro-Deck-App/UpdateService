@@ -313,7 +313,7 @@ public class ApiV2ControllerTests : TestBase
         var version1 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.0.0");
         var version2 = await _versionDatabaseSeeder.CreateVersion(entity => entity.Version = "1.1.0");
 
-        await _versionFileDatabaseSeeder.CreateVersionFile(version1, update: entity =>
+        var versionFile = await _versionFileDatabaseSeeder.CreateVersionFile(version1, update: entity =>
         {
             entity.FileProvider = FileProvider.GitHub;
             entity.PlatformIdentifier = platform;
@@ -327,8 +327,10 @@ public class ApiV2ControllerTests : TestBase
 
         Assert.That(result1.Version, Is.EqualTo(version1.Version));
         Assert.That(result1.Platforms, Contains.Key(platform));
-        Assert.That(result1.Platforms[platform],
+        Assert.That(result1.Platforms[platform].DownloadUrl,
             Is.EqualTo(FileProviderUrlBuilder.GetUrl(FileProvider.GitHub, version1.Version, fileName)));
+        Assert.That(result1.Platforms[platform].FileSize, Is.EqualTo(versionFile.FileSize));
+        Assert.That(result1.Platforms[platform].FileHash, Is.EqualTo(versionFile.FileHash));
 
         var result2 = await IntegrationTestHelper.TestClientRequest
             .AppendPathSegment(IntegrationTestConstants.ApiV2VersionBase)

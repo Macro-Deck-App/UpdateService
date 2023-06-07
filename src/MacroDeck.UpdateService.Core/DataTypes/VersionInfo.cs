@@ -5,5 +5,5 @@ namespace MacroDeck.UpdateService.Core.DataTypes;
 public class VersionInfo
 {
     public string Version { get; set; } = string.Empty;
-    public Dictionary<PlatformIdentifier, string> Platforms { get; set; } = new();
+    public Dictionary<PlatformIdentifier, VersionFileInfo> Platforms { get; set; } = new();
 }

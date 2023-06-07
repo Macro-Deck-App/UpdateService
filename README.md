@@ -52,7 +52,16 @@ The `ApiV2VersionInfo` class provides information about a Macro Deck version. Th
 
 - **Properties**:
   - `Version`: A string representation of the Macro Deck version.
-  - `Platforms`: A dictionary mapping `PlatformIdentifier` enum values to their respective download links for the specified version.
+  - `Platforms`: A dictionary mapping `PlatformIdentifier` enum values to their respective `ApiV2VersionFileInfo` objects for the specified version.
+
+### `ApiV2VersionFileInfo`
+
+The `ApiV2VersionFileInfo` class provides information about a specific version file of Macro Deck. This includes the download URL, file hash, and file size.
+
+- **Properties**:
+  - `DownloadUrl`: A string representing the download URL for the version file.
+  - `FileHash`: A string representing the hash of the version file.
+  - `FileSize`: A long integer representing the file size of the version file.
 
 ### `ApiV2CheckResult`
 
@@ -60,4 +69,4 @@ The `ApiV2CheckResult` class provides the result of a version check for Macro De
 
 - **Properties**:
   - `NewerVersionAvailable`: A boolean indicating whether a newer version of Macro Deck is available.
-  - `Version`: An instance of `ApiV2VersionInfo` providing information about the newer version if one is available; null otherwise.
+  - `Version`: An instance of `ApiV2VersionInfo` providing information about the newer version if one is available

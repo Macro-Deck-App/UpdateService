@@ -10,5 +10,6 @@ public class ApiV2Profile : Profile
     {
         CreateMap<VersionInfo, ApiV2VersionInfo>();
         CreateMap<CheckResult, ApiV2CheckResult>();
+        CreateMap<VersionFileInfo, ApiV2VersionFileInfo>();
     }
 }

@@ -6,5 +6,6 @@ public class ApiV2VersionInfo
 {
     public string Version { get; set; } = string.Empty;
     public bool IsBeta { get; set; }
+    public string ChangeNotesUrl { get; set; } = string.Empty;
     public Dictionary<PlatformIdentifier, ApiV2VersionFileInfo> Platforms { get; set; } = new();
 }

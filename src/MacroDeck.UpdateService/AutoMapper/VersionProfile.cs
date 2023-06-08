@@ -16,6 +16,7 @@ public class VersionProfile : Profile
                 {
                     Version = src.Version,
                     IsBeta = src.IsBetaVersion,
+                    ChangeNotesUrl = GetChangeNotesUrl(src.Version),
                     Platforms = src.Files.ToDictionary(
                         f => f.PlatformIdentifier, 
                         f => new VersionFileInfo
@@ -26,6 +27,10 @@ public class VersionProfile : Profile
                         })
                 };
             });
+    }
 
+    private static string GetChangeNotesUrl(string version)
+    {
+        return $"https://github.com/Macro-Deck-App/Macro-Deck/releases/tag/v{version}";
     }
 }

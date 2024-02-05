@@ -25,6 +25,7 @@ public class Startup
         services.RegisterRestInterfaceControllers();
         services.RegisterClassesEndsWithAsScoped("Repository");
         services.RegisterClassesEndsWithAsScoped("Manager");
+        services.AddMetricsConfiguration();
     }
     
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

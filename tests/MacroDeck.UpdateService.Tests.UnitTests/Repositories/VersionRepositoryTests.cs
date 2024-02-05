@@ -62,7 +62,7 @@ public class VersionRepositoryTests : TestBase
             .Where(x => x.IsBetaVersion == false)
             .Where(x => x.Files.Any(f => f.PlatformIdentifier == PlatformIdentifier.WinX64))
             .MaxBy(x => x.Id);
-        Assert.NotNull(newerVersion);
+        Assert.That(newerVersion, Is.Not.Null);
         Assert.That(newerVersion.Version, Is.EqualTo(latestVersion.Version));
     }
     
@@ -82,7 +82,7 @@ public class VersionRepositoryTests : TestBase
         var latestVersion = versionEntities
             .Where(x => x.Files.Any(f => f.PlatformIdentifier == PlatformIdentifier.WinX64))
             .MaxBy(x => x.Id);
-        Assert.NotNull(newerVersion);
+        Assert.That(newerVersion, Is.Not.Null);
         Assert.That(newerVersion.Version, Is.EqualTo(latestVersion.Version));
     }
     
@@ -101,7 +101,7 @@ public class VersionRepositoryTests : TestBase
             .FirstOrDefault();
 
         var newerVersion = await versionRepository.GetNewerVersion(latestVersion, PlatformIdentifier.WinX64, true);
-        Assert.Null(newerVersion);
+        Assert.That(newerVersion, Is.Null);
     }
 
     private async Task SeedDatabase(IEnumerable<BaseEntity> entities)

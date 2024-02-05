@@ -52,13 +52,13 @@ public class FileControllerTests : TestBase
 
         var uploadRequestResponse = await result.GetStringAsync();
         
-        Assert.NotNull(uploadRequestResponse);
+        Assert.That(uploadRequestResponse, Is.Not.Null);
         Assert.That(uploadRequestResponse, Is.EqualTo("1.0.0"));
 
         var dbVersion = await _versionTestRepository.AsQueryable()
             .Include(x => x.Files)
             .SingleOrDefaultAsync(x => x.Version == "1.0.0");
-        Assert.NotNull(dbVersion);
+        Assert.That(dbVersion, Is.Not.Null);
         Assert.That(dbVersion.Files.Count, Is.EqualTo(1));
         Assert.That(dbVersion.Files.SingleOrDefault()?.FileHash, Is.EqualTo(SharedTestConstants.TestFileWinSha256));
     }
@@ -92,7 +92,7 @@ public class FileControllerTests : TestBase
         Assert.That(_versionFileTestRepository.AsQueryable().Count(), Is.EqualTo(1));
         
         var errorException = await result.GetJsonAsync<ErrorResponse>();
-        Assert.NotNull(errorException);
+        Assert.That(errorException, Is.Not.Null);
         Assert.That(errorException.ErrorCode, Is.EqualTo(ErrorCode.FileAlreadyExists));
         Assert.That(errorException.Error, Is.EqualTo(ErrorMessages.FileAlreadyExists));
     }

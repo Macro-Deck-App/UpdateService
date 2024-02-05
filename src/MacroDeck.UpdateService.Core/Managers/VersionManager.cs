@@ -94,7 +94,7 @@ public class VersionManager : IVersionManager
         var versionEntity = await _versionRepository.GetLatestVersion(platformIdentifier, includePreviewVersions)
                ?? throw new NoVersionFoundException();
 
-        return _mapper.Map<VersionInfo>(versionEntity);
+        return _mapper.Map<VersionInfo>(versionEntity) ?? throw new NoVersionFoundException();
     }
 
     public async ValueTask<VersionInfo> GetVersion(string version)
@@ -102,7 +102,7 @@ public class VersionManager : IVersionManager
         var versionEntity = await _versionRepository.GetVersionInfo(version)
                ?? throw new VersionDoesNotExistException();
 
-        return _mapper.Map<VersionInfo>(versionEntity);
+        return _mapper.Map<VersionInfo>(versionEntity) ?? throw new NoVersionFoundException();
     }
 
     public async ValueTask<VersionEntity> GetOrCreateVersion(string version)

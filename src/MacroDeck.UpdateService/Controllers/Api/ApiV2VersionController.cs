@@ -27,7 +27,7 @@ public class ApiV2VersionController : UpdateServiceControllerBase
 
     [HttpGet("check/{installedVersion}/{platform}")]
     [AllowAnonymous]
-    public async ValueTask<ActionResult<ApiV2CheckResult>> CheckForUpdates(
+    public async ValueTask<ActionResult<ApiV2CheckResult?>> CheckForUpdates(
         string installedVersion,
         PlatformIdentifier platform,
         [FromQuery] bool betaVersions = false)
@@ -39,7 +39,7 @@ public class ApiV2VersionController : UpdateServiceControllerBase
 
     [HttpGet("latest/{platform}")]
     [AllowAnonymous]
-    public async ValueTask<ActionResult<ApiV2VersionInfo>> GetLatestVersion(
+    public async ValueTask<ActionResult<ApiV2VersionInfo?>> GetLatestVersion(
         PlatformIdentifier platform,
         [FromQuery] bool betaVersions = false)
     {
@@ -49,7 +49,7 @@ public class ApiV2VersionController : UpdateServiceControllerBase
 
     [HttpGet("{version}")]
     [AllowAnonymous]
-    public async ValueTask<ActionResult<ApiV2VersionInfo>> GetVersion(string version)
+    public async ValueTask<ActionResult<ApiV2VersionInfo?>> GetVersion(string version)
     {
         var versionInfo = await _versionManager.GetVersion(version);
         return _mapper.Map<ApiV2VersionInfo>(versionInfo);

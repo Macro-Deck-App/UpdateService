@@ -5,7 +5,7 @@ WORKDIR /app
 FROM ${BASE_IMAGE} AS build
 WORKDIR /src/src/MacroDeck.UpdateService/
 
-RUN dotnet msbuild "MacroDeck.UpdateService.csproj" -warnAsMessage:CS0618 -warnAsError -p:Configuration=Release
+RUN dotnet msbuild "MacroDeck.UpdateService.csproj" -p:Configuration=Release
 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app

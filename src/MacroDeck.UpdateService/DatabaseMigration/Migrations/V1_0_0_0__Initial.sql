@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS updateservice;
+ALTER SCHEMA updateservice OWNER TO updateservice;
+
 CREATE SEQUENCE updateservice.version_id_seq START WITH 1 INCREMENT BY 1;
 ALTER SEQUENCE updateservice.version_id_seq OWNER TO updateservice;
 CREATE TABLE updateservice.version

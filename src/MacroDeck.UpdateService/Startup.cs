@@ -37,6 +37,7 @@ public class Startup
         app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapPrometheusScrapingEndpoint();
             endpoints.MapControllers();
         });
     }

@@ -1,6 +1,6 @@
 using MacroDeck.UpdateService.Core.Configuration;
-using MacroDeck.UpdateService.Core.DataAccess.Extensions;
 using MacroDeck.UpdateService.Core.Helper;
+using MacroDeck.UpdateService.DatabaseMigration;
 using MacroDeck.UpdateService.Tests.IntegrationTests.DataAccess;
 using MacroDeck.UpdateService.Tests.IntegrationTests.DataAccess.DatabaseSeeder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +20,7 @@ public class Setup
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         
         await UpdateServiceConfiguration.Initialize();
+        DatabaseMigrationHelper.MigrateDatabase();
         
         if (EnvironmentHelper.IsGitHubIntegrationTest)
         {
@@ -32,7 +33,6 @@ public class Setup
             .ConfigureServices(InitializeAdditionalServices);
         
         IntegrationTestHelper.TestServer = new TestServer(webHostBuilder);
-        await IntegrationTestHelper.TestServer.Services.MigrateDatabaseAsync();
         await IntegrationTestHelper.TruncateAllTables();
         
         IntegrationTestHelper.RootScope = IntegrationTestHelper.TestServer.Services.CreateScope();

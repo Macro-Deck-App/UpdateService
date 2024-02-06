@@ -7,39 +7,40 @@ public class VersionFileEntityConfig : BaseEntityConfig<VersionFileEntity>
 {
     public VersionFileEntityConfig()
     {
-        TableName = "version_files";
+        TableName = "version_file";
+        ColumnPrefix = "f_";
     }
 
     public override void Configure(EntityTypeBuilder<VersionFileEntity> builder)
     {
         base.Configure(builder);
 
-        builder.ToTable(TableName, schema: Schema);
+        builder.ToTable(TableName);
 
         builder.HasIndex(x => x.VersionId);
 
         builder.Property(x => x.PlatformIdentifier)
-            .HasColumnName("platform_identifier")
+            .HasColumnName(ColumnPrefix + "platform_identifier")
             .IsRequired();
 
         builder.Property(x => x.FileProvider)
-            .HasColumnName("file_provider")
+            .HasColumnName(ColumnPrefix + "file_provider")
             .IsRequired();
         
         builder.Property(x => x.FileName)
-            .HasColumnName("file_name")
+            .HasColumnName(ColumnPrefix + "file_name")
             .IsRequired();
         
         builder.Property(x => x.FileHash)
-            .HasColumnName("hash")
+            .HasColumnName(ColumnPrefix + "hash")
             .IsRequired();
 
         builder.Property(x => x.FileSize)
-            .HasColumnName("file_size")
+            .HasColumnName(ColumnPrefix + "file_size")
             .IsRequired();
 
         builder.Property(x => x.VersionId)
-            .HasColumnName("version_ref")
+            .HasColumnName(ColumnPrefix + "version_ref")
             .IsRequired();
     }
 }

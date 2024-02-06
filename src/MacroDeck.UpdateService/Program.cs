@@ -1,6 +1,6 @@
 using MacroDeck.UpdateService.Core.Configuration;
-using MacroDeck.UpdateService.Core.DataAccess.Extensions;
 using MacroDeck.UpdateService.Core.Helper;
+using MacroDeck.UpdateService.DatabaseMigration;
 using MacroDeck.UpdateService.StartupConfig;
 using Serilog;
 
@@ -14,6 +14,7 @@ public static class Program
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
         await UpdateServiceConfiguration.Initialize();
+        DatabaseMigrationHelper.MigrateDatabase();
         
         var app = Host.CreateDefaultBuilder(args)
             .ConfigureSerilog()
@@ -27,7 +28,6 @@ public static class Program
                 });
             }).Build();
 
-        await app.Services.MigrateDatabaseAsync();
         await app.RunAsync();
     }
 

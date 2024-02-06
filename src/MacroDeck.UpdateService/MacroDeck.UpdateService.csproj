@@ -6,13 +6,10 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" />
+        <PackageReference Include="Evolve" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
         <PackageReference Include="Serilog" />
@@ -30,7 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Config\config.json">
+        <Content Include="DatabaseMigration\Migrations\*.sql" CopyToPublishDirectory="Always" CopyToOutputDirectory="Always"/>
+        <None Update="Config\config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       </None>

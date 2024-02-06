@@ -29,5 +29,9 @@
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageVersion Update="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+    </ItemGroup>
 
 </Project>
